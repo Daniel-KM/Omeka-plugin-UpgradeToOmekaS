@@ -118,24 +118,6 @@ try to install the last version of the modules, when possible, but you may have
 to update the modules inside Omeka S.
 
 
-Update of the list of plugins, modules and themes
--------------------------------------------------
-
-To add a new addon to the lists of [available addons], simply add its main url
-in the matching csv file in the directory `docs/_data/` and run the php script
-(here from the root of Omeka):
-
-```
-    php -f plugins/UpgradeToOmekaS/docs/_scripts/update_data.php
-```
-
-You may need to add a file with a token from your github account in `docs/_scripts/token_github.txt`
-to be allowed to fetch more than 50 results.
-
-Anyway, all the plugins, modules and themes on Github are automatically added if
-they are well referenced on Github (via a readme or via a topic).
-
-
 Internal Upgrade Process
 ------------------------
 
@@ -232,12 +214,12 @@ Copyright
 * Copyright Daniel Berthereau, 2017
 
 
-[Upgrade to Omeka Semantic]: https://github.com/Daniel-KM/UpgradeToOmekaS
+[Upgrade to Omeka Semantic]: https://github.com/Daniel-KM/Omeka-plugin-UpgradeToOmekaS
 [Upgrade from Omeka Classic]: https://github.com/Daniel-KM/Omeka-S-module-UpgradeFromOmekaClassic
 [Omeka]: https://www.omeka.org
-[Omeka Classic]: https://omeka.org
+[Omeka Classic]: https://omeka.org/classic
 [Omeka Semantic]: https://omeka.org/s
-[Omeka 2]: https://omeka.org
+[Omeka 2]: https://omeka.org/classic
 [Omeka S]: https://omeka.org/s
 [Dublin Core Extended]: http://omeka.org/add-ons/plugins/dublin-core-extended/
 [Embed Codes]: http://omeka.org/add-ons/plugins/embed-codes/
@@ -246,20 +228,19 @@ Copyright
 [More User Roles]: https://github.com/ebellempire/MoreUserRoles
 [Simple Pages]: http://omeka.org/add-ons/plugins/simple-pages/
 [Social Bookmarking]: http://omeka.org/add-ons/plugins/social-bookmarking/
-[Universal Viewer]: https://github.com/Daniel-KM/UniversalViewer4Omeka
+[Universal Viewer]: https://github.com/Daniel-KM/Omeka-plugin-UniversalViewer
 [Guest User]: https://github.com/omeka/plugin-GuestUser
 [plugins for Omeka 2 and matching modules for Omeka S]: https://daniel-km.github.io/UpgradeToOmekaS
 [modules]: https://daniel-km.github.io/UpgradeToOmekaS/omeka_s_modules.html
 [official themes]: https://daniel-km.github.io/UpgradeToOmekaS/omeka_s_themes.html
 [themes]: https://daniel-km.github.io/UpgradeToOmekaS/omeka_s_themes.html
-[available addons]: https://daniel-km.github.io/UpgradeToOmekaS
 [Twig]: http://twig.sensiolabs.org
 [module Twig]: https://github.com/digihum/omeka-s-twig
 [Omeka 2 Importer]: https://github.com/omeka-s-modules/Omeka2Importer
-[Clean Url]: https://github.com/Daniel-KM/CleanUrl
+[Clean Url]: https://github.com/Daniel-KM/Omeka-plugin-CleanUrl
 [Zend 3]: https://framework.zend.com/
 [Doctrine]: http://www.doctrine-project.org/
-[plugin issues]: https://github.com/Daniel-KM/UpgradeToOmekaS/issues
+[plugin issues]: https://github.com/Daniel-KM/Omeka-plugin-UpgradeToOmekaS/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
