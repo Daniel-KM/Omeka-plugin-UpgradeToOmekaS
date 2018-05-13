@@ -16,13 +16,13 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
     public $module = array(
         array(
             'name' => 'IiifServer',
-            'version' => '3.5.9',
+            'version' => '3.5.10',
             'url' => 'https://github.com/Daniel-KM/Omeka-S-module-IiifServer/releases/download/%s/IiifServer.zip',
-            'size' => 832980,
-            'sha1' => '358ed63e24fed0d10c7d78b5d48abfef355efc67',
+            'size' => 262080,
+            'sha1' => 'de136c4a56c5d7a429eaf5eb9bd7b4cd795626b0',
             'type' => 'port',
             'install' => array(
-                'settings' => array(
+                'config' => array(
                     'iiifserver_manifest_description_property' => 'dcterms:bibliographicCitation',
                     'iiifserver_manifest_attribution_property' => '',
                     'iiifserver_manifest_attribution_default' => 'Provided by Example Organization', // @translate
@@ -40,13 +40,13 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
         ),
         array(
             'name' => 'UniversalViewer',
-            'version' => '3.5.6',
+            'version' => '3.5.7',
             'url' => 'https://github.com/Daniel-KM/Omeka-S-module-UniversalViewer/releases/download/%s/UniversalViewer.zip',
-            'size' => 2083326,
-            'sha1' => 'f1af1348bf80581e7f990f7c9f1be0d45c76c086',
+            'size' => 2083342,
+            'sha1' => 'cafa187b4ebadb4e026c0c1c03c4b9da027ca66d',
             'type' => 'port',
             'install' => array(
-                'settings' => array(
+                'config' => array(
                     'universalviewer_manifest_property' => '',
                 ),
                 'site_settings' => array(
@@ -72,7 +72,7 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
 
         // Set default settings, that will be overridden by current Omeka ones.
         foreach ($this->module as $module) {
-            foreach ($module['install']['settings'] as $setting => $value) {
+            foreach ($module['install']['config'] as $setting => $value) {
                 $target->saveSetting($setting, $value);
             }
         }

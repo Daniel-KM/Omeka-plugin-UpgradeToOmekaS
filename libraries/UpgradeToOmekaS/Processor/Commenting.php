@@ -16,10 +16,10 @@ class UpgradeToOmekaS_Processor_Commenting extends UpgradeToOmekaS_Processor_Abs
 
     public $module = array(
         'name' => 'Comment',
-        'version' => '3.1.4',
+        'version' => '3.1.5',
         'url' => 'https://github.com/omeka-s-modules/Mapping/releases/download/v%s/Comment.zip',
-        'size' => '',
-        'sha1' => '',
+        'size' => 185973,
+        'sha1' => 'ead20a46b121d636a4fcd8be5d6144f279d15d92',
         'type' => 'equivalent',
         'note' => 'Improvements and full rewrite based on a fork of Commenting.',
         'original_ids' => true,
@@ -37,7 +37,7 @@ CREATE TABLE comment (
     name VARCHAR(190) NOT NULL,
     website VARCHAR(760) NOT NULL,
     ip VARCHAR(45) NOT NULL,
-    user_agent VARCHAR(65535) NOT NULL,
+    user_agent TEXT NOT NULL,
     body LONGTEXT NOT NULL,
     approved TINYINT(1) NOT NULL,
     flagged TINYINT(1) NOT NULL,
@@ -56,24 +56,24 @@ ALTER TABLE comment ADD CONSTRAINT FK_9474526CF6BD1646 FOREIGN KEY (site_id) REF
 ALTER TABLE comment ADD CONSTRAINT FK_9474526C727ACA70 FOREIGN KEY (parent_id) REFERENCES comment (id) ON DELETE SET NULL;
 ',
         ),
-        'settings' => [
-            'comment_resources' => ['items'],
+        'config' => array(
+            'comment_resources' => array('items'),
             'comment_public_allow_view' => true,
             'comment_public_allow_comment' => true,
             'comment_public_require_moderation' => true,
-            'comment_public_notify_post' => [],
+            'comment_public_notify_post' => array(),
             'comment_threaded' => true,
             'comment_max_length' => 2000,
-            'comment_comments_label' => 'Comments',
-            'comment_legal_text' => '',
+            'comment_comments_label' => 'Comments', // @translate
+            'comment_legal_text' => '<p>I agree with <a rel="licence" href="#" target="_blank">terms of use</a> and I accept to free my contribution under the licence <a rel="licence" href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA</a>.</p>',
             'comment_wpapi_key' => '',
             'comment_antispam' => true,
-        ],
-        'site_settings' => [
+        ),
+        'site_settings' => array(
             'comment_append_item_set_show' => true,
             'comment_append_item_show' => true,
             'comment_append_media_show' => true,
-        ],
+        ),
     );
 
     public $tables = array(

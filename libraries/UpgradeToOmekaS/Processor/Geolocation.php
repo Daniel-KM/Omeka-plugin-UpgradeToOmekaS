@@ -11,16 +11,16 @@ class UpgradeToOmekaS_Processor_Geolocation extends UpgradeToOmekaS_Processor_Ab
     public $pluginName = 'Geolocation';
     // Upstream release.
     public $minVersion = '2.0';
-    // public $maxVersion = '2.2.5';
+    // public $maxVersion = '2.2.6';
     // Not yet included Improvements.
     public $maxVersion = '2.3.3-2.2.5';
 
     public $module = array(
         'name' => 'Mapping',
-        'version' => '1.0.0',
+        'version' => '1.0.1',
         'url' => 'https://github.com/omeka-s-modules/Mapping/releases/download/v%s/Mapping-%s.zip',
-        'size' => 247555,
-        'sha1' => '1d00930bcfc7fce2bfc1e99afca27c107b152860',
+        'size' => 821064,
+        'sha1' => '7640c75cf5c29d33d08269bd3ece0486c33ae2fd',
         'type' => 'equivalent',
         'partial' => true,
         'note' => 'Really free (no Google Map but Leaflet/OpenStreetMap), smarter, with multipoints and layers.',

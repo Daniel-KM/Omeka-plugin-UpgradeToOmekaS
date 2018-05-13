@@ -13,7 +13,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
     public $module = array(
         'type' => 'integrated',
         // The version is required here only to save it in the database.
-        'version' => '1.0.1',
+        'version' => '1.1.1',
     );
 
     public $processMethods = array(

@@ -23,39 +23,39 @@ class UpgradeToOmekaS_Processor_Tagging extends UpgradeToOmekaS_Processor_Abstra
         'install' => array(
             // Copied from the original Module.php.
             'sql' => '
-CREATE TABLE `tag` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_389B7835E237E06` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-CREATE TABLE `tagging` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tag_id` int(11) DEFAULT NULL,
-  `resource_id` int(11) DEFAULT NULL,
-  `owner_id` int(11) DEFAULT NULL,
-  `status` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created` datetime NOT NULL,
-  `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `owner_tag_resource` (`owner_id`,`tag_id`,`resource_id`),
-  KEY `IDX_A4AED1237B00651C` (`status`),
-  KEY `IDX_A4AED123BAD26311` (`tag_id`),
-  KEY `IDX_A4AED12389329D25` (`resource_id`),
-  KEY `IDX_A4AED1237E3C61F9` (`owner_id`),
-  CONSTRAINT `FK_A4AED1237E3C61F9` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_A4AED12389329D25` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_A4AED123BAD26311` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE tag (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(190) NOT NULL,
+    UNIQUE INDEX UNIQ_389B7835E237E06 (name),
+    PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+CREATE TABLE tagging (
+    id INT AUTO_INCREMENT NOT NULL,
+    tag_id INT DEFAULT NULL,
+    resource_id INT DEFAULT NULL,
+    owner_id INT DEFAULT NULL,
+    status VARCHAR(190) NOT NULL,
+    created DATETIME NOT NULL,
+    modified DATETIME DEFAULT NULL,
+    INDEX IDX_A4AED123BAD26311 (tag_id),
+    INDEX IDX_A4AED12389329D25 (resource_id),
+    INDEX IDX_A4AED1237E3C61F9 (owner_id),
+    INDEX IDX_A4AED1237B00651C (status),
+    UNIQUE INDEX owner_tag_resource (owner_id, tag_id, resource_id),
+    PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+ALTER TABLE tagging ADD CONSTRAINT FK_A4AED123BAD26311 FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE SET NULL;
+ALTER TABLE tagging ADD CONSTRAINT FK_A4AED12389329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE SET NULL;
+ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) REFERENCES user (id) ON DELETE SET NULL;
 ',
-            'settings' => array(
+            'config' => array(
                 'folksonomy_public_allow_tag' => true,
                 'folksonomy_public_require_moderation' => false,
                 'folksonomy_public_notification' => true,
                 'folksonomy_max_length_tag' => 190,
                 'folksonomy_max_length_total' => 1000,
                 'folksonomy_message' => '+',
-                'folksonomy_legal_text' => '',
+                'folksonomy_legal_text' => '<p>I agree with <a rel="licence" href="#" target="_blank">terms of use</a> and I accept to free my contribution under the licence <a rel="licence" href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA</a>.</p>',
             ),
             'site_settings' => array(
                 'folksonomy_append_item_set_show' => true,
@@ -90,7 +90,7 @@ CREATE TABLE `tagging` (
     protected function _upgradeSettings()
     {
         if (!plugin_is_active('Tagging')) {
-            $this->module['install']['settings']['folksonomy_legal_text'] = '<p>'
+            $this->module['install']['config']['folksonomy_legal_text'] = '<p>'
                 . __('I agree with %sterms of use%s and I accept to free my contribution under the licence %sCC BY-SA%s.',
                     '<a rel="licence" href="#" target="_blank">', '</a>',
                     '<a rel="licence" href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">', '</a>'

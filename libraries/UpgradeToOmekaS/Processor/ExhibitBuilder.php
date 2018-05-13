@@ -10,7 +10,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
     public $pluginName = 'ExhibitBuilder';
     public $minVersion = '3.1';
-    public $maxVersion = '3.3.4';
+    public $maxVersion = '3.4';
 
     public $module = array(
         'type' => 'integrated',

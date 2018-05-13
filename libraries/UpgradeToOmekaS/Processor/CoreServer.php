@@ -14,10 +14,10 @@ class UpgradeToOmekaS_Processor_CoreServer extends UpgradeToOmekaS_Processor_Abs
 
     public $module = array(
         'name' => 'Omeka S',
-        'version' => '1.0.1',
+        'version' => '1.1.1',
         'url' => 'https://github.com/omeka/omeka-s/releases/download/v%s/omeka-s-%s.zip',
-        'size' => 14601495,
-        'sha1' => '69a63686fb90e6854580ca05424d692be1d0f68f',
+        'size' => 14393944,
+        'sha1' => 'fc00ca9314c0303f82080e815238efde136c027e',
         'type' => 'equivalent',
         'requires' => array(
             'minDb' => array(

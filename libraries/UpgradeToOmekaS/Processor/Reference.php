@@ -27,14 +27,16 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
                 'reference_query_type' => 'eq',
                 'reference_link_to_single' => true,
                 'reference_total' => true,
-                'reference_slugs' => [
-                    'dcterms:subject' => [
+                // Pages ("properties" or "resource_classes") to provide, by slug.
+                'reference_slugs' => array(
+                    // 3 is the property id of Dublin Core Terms Subject, forced during install.
+                    'dcterms:subject' => array(
                         'type' => 'properties',
                         'term' => 3,
                         'label' => 'Subject',
                         'active' => true,
-                    ],
-                ],
+                    ),
+                ),
                 'reference_list_skiplinks' => true,
                 'reference_list_headings' => true,
                 'reference_tree_enabled' => false,

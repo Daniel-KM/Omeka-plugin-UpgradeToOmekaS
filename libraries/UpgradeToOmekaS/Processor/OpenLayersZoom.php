@@ -14,14 +14,14 @@ class UpgradeToOmekaS_Processor_OpenLayersZoom extends UpgradeToOmekaS_Processor
 
     public $module = array(
         'name' => 'IiifServer',
-        'version' => '3.5.9',
+        'version' => '3.5.10',
         'url' => 'https://github.com/Daniel-KM/Omeka-S-module-IiifServer/releases/download/%s/IiifServer.zip',
-        'size' => 832980,
-        'sha1' => '358ed63e24fed0d10c7d78b5d48abfef355efc67',
+        'size' => 262080,
+        'sha1' => 'de136c4a56c5d7a429eaf5eb9bd7b4cd795626b0',
         'type' => 'port',
         'note' => 'OpenLayers can be replaced by OpenSeadragon, integrated in Omeka S, and the tiler is integrated in the module IIIF Server.',
         'install' => array(
-            'settings' => array(
+            'config' => array(
                 'iiifserver_manifest_description_property' => 'dcterms:bibliographicCitation',
                 'iiifserver_manifest_attribution_property' => '',
                 'iiifserver_manifest_attribution_default' => 'Provided by Example Organization', // @translate
@@ -125,7 +125,7 @@ class UpgradeToOmekaS_Processor_OpenLayersZoom extends UpgradeToOmekaS_Processor
 
         $destination = $this->getParam('base_dir')
             . DIRECTORY_SEPARATOR . 'files'
-            . DIRECTORY_SEPARATOR . $this->module['install']['settings']['iiifserver_image_tile_dir'];
+            . DIRECTORY_SEPARATOR . $this->module['install']['config']['iiifserver_image_tile_dir'];
 
         if (!file_exists($source) || !is_dir($source) || !is_readable($source)) {
             $this->_log('[' . __FUNCTION__ . ']: '
