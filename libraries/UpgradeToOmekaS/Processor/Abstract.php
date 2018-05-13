@@ -218,7 +218,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
     /**
      * Short to the security.ini.
      *
-     * @var Zend_Ini
+     * @var Zend_Config_Ini
      */
     protected $_securityIni;
 

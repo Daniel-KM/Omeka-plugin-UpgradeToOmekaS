@@ -19,7 +19,7 @@ abstract class UpgradeToOmekaS_Job_Abstract extends Omeka_Job_AbstractJob
     /**
      * Short to the security.ini.
      *
-     * @var Zend_Ini
+     * @var Zend_Config_Ini
      */
     protected $_securityIni;
 
@@ -199,7 +199,7 @@ abstract class UpgradeToOmekaS_Job_Abstract extends Omeka_Job_AbstractJob
      *
      * @internal The database is Unicode and this is allowed since php 5.4.
      *
-     * @param var $value
+     * @param mixed $value
      * @return string
      */
     public function toJson($value)

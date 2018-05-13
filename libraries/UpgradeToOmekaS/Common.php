@@ -181,8 +181,8 @@ class UpgradeToOmekaS_Common
      * Chmod of all files recursively in a directory.
      *
      * @param string $dir
-     * @param numeric $modFile
-     * @param numeric $modDir
+     * @param int $modFile
+     * @param int $modDir
      * @return boolean
      */
     public static function chmodFolder($dir, $modFile = 0644, $modDir = 0755)

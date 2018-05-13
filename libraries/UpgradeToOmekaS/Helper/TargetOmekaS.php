@@ -12,7 +12,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
      * Wrapper to set a global setting.
      *
      * @param string $name The name of the value ("id" in the table).
-     * @param var $value The value will be json_encoded().
+     * @param mixed $value The value will be json_encoded().
      * @return void
      */
     public function saveSetting($name, $value)
@@ -24,7 +24,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
      * Wrapper to set a site setting.
      *
      * @param string $name The name of the value ("id" in the table).
-     * @param var $value The value will be json_encoded().
+     * @param mixed $value The value will be json_encoded().
      * @param integer $siteId The main site, or an exhibit.
      * @return void
      */
@@ -38,7 +38,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
      *
      * @param string $table "setting" or "site_setting"
      * @param string $name The name of the value ("id" in the table).
-     * @param var $value The value will be json_encoded().
+     * @param mixed $value The value will be json_encoded().
      * @param integer $siteId The main site, or an exhibit.
      * @return void
      */
@@ -99,7 +99,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
      * Wrapper to get a json_decoded global setting.
      *
      * @param string $name The name of the value ("id" in the table).
-     * @return var
+     * @return mixed
      */
     public function selectSetting($name)
     {
@@ -111,7 +111,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
      *
      * @param string $name The name of the value ("id" in the table).
      * @param integer $siteId The main site, or an exhibit.
-     * @return var
+     * @return mixed
      */
     public function selectSiteSetting($name, $siteId = 1)
     {
@@ -124,7 +124,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
      * @param string $table "setting" or "site_setting"
      * @param string $name The name of the value ("id" in the table).
      * @param integer $siteId The main site, or an exhibit.
-     * @return var
+     * @return mixed
      */
     public function selectJsonSetting($table, $name, $siteId = null)
     {
@@ -163,7 +163,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
      *
      * @internal The database is Unicode and this is allowed since php 5.4.
      *
-     * @param var $value
+     * @param mixed $value
      * @return string
      */
     public function toJson($value)
