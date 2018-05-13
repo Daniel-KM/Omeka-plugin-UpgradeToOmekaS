@@ -57,6 +57,15 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
         'square_thumbnail' => 'square',
     );
 
+    protected function _precheckConfig()
+    {
+        // TODO Fix issue between MultiLanguage and ExhibitBuilder.
+        $plugin = get_record('Plugin', array('name' => 'MultiLanguage'));
+        if ($plugin && $plugin->active) {
+            $this->_prechecks[] = __('There is an incompatibility between the plugins MultiLanguage and ExhibitBuilder, so disable MultiLanguage to process the upgrade.');
+        }
+    }
+
     protected function _checkConfig()
     {
         $totalRecordExhibits = total_records('Exhibit');
@@ -91,7 +100,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             Zend_Log::INFO);
         $this->_log('[' . __FUNCTION__ . ']: ' . __('Status "featured" and "tags" are lost.')
                 . ' ' . __('The themes of exhibits are not upgraded, because they are standard sites in Omeka S.'),
-            Zend_Log::NOTICE);
+            Zend_Log::WARN);
 
         $totalRecordExhibits = total_records('Exhibit');
         $totalRecordPages = total_records('ExhibitPage');
@@ -284,6 +293,8 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                     $slug = substr($record->slug, 0, 190 - 20) . '-exhibit-page-' . $record->id;
                 }
                 $mapExhibitPageSlugIds[$siteId][$record->id] = $slug;
+
+                // TODO Manage short title (Omeka >= 3.3.4).
 
                 $toInsert = array();
                 $toInsert['id'] = null;
