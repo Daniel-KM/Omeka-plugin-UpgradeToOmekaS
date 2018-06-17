@@ -187,6 +187,8 @@ abstract class UpgradeToOmekaS_Processor_Abstract
     /**
      * Maximum rows to process by loop.
      *
+     * According to the Omeka management of records, a small number is preferred.
+     *
      * @var integer
      */
     public $maxChunk = 10;

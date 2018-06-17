@@ -473,17 +473,18 @@ OUTPUT;
 ;;;;;;;
 
 [info]
-name = "{$sourceIni->title} (upgraded)"
-version = "{$sourceIni->version}-upgraded"
-author = "{$sourceIni->author}"
+name        = "{$sourceIni->title} (upgraded)"
+version     = "{$sourceIni->version}-upgraded"
+author      = "{$sourceIni->author}"
 description = "{$sourceIni->description} [upgraded the {$this->getDatetime()}]"
-theme_link = "{$sourceIni->support_link}"
+theme_link  = "{$sourceIni->support_link}"
 author_link = "{$sourceIni->website}"
-license = "{$sourceIni->license}"
+license     = "{$sourceIni->license}"
+omeka_version_constraint = "^1.1.0"
 ;omeka_minimum_version = "{$sourceIni->omeka_minimum_version}"
 ;omeka_target_version = "{$sourceIni->omeka_target_version}"
-helpers[] = ThemeHelperOne
-helpers[] = ThemeHelperTwo
+;helpers[] = ThemeHelperOne
+;helpers[] = ThemeHelperTwo
 
 
 OUTPUT;
