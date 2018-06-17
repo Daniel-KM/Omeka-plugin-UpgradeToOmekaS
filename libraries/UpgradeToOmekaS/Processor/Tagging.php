@@ -194,6 +194,9 @@ ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) RE
     {
         $recordType = 'RecordsTags';
 
+        // Allows to manage an installation without the plugin Tagging.
+        $hasTaggingPlugin = plugin_is_active('Tagging');
+
         $totalRecords = total_records($recordType);
         if (empty($totalRecords)) {
             return;
@@ -226,24 +229,26 @@ ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) RE
 
                 // Check the taggings to see if there is  the status, the owner
                 // and the time.
-                $sourceTagging = isset($targetTags[$record->tag_id])
-                    ? get_record('Tagging', array(
-                        'record_type' => $record->record_type,
-                        'record_id' => $record->record_id,
-                        'name' => $targetTags[$record->tag_id],
-                    ))
-                    : null;
-                if ($sourceTagging) {
-                    $status = $sourceTagging->status;
-                    $ownerId = isset($targetUserIds[$sourceTagging->user_id])
-                        ? $targetUserIds[$sourceTagging->user_id]
+                if ($hasTaggingPlugin) {
+                    $sourceTagging = isset($targetTags[$record->tag_id])
+                        ? get_record('Tagging', array(
+                            'record_type' => $record->record_type,
+                            'record_id' => $record->record_id,
+                            'name' => $targetTags[$record->tag_id],
+                        ))
                         : null;
-                    $created = $sourceTagging->added >= $record->time
-                        ? $record->time
-                        : $sourceTagging->added;
-                    $modified = $sourceTagging->added < $record->time
-                        ? $record->time
-                        : ($sourceTagging->added > $record->time ? $sourceTagging->added: null);
+                    if ($sourceTagging) {
+                        $status = $sourceTagging->status;
+                        $ownerId = isset($targetUserIds[$sourceTagging->user_id])
+                            ? $targetUserIds[$sourceTagging->user_id]
+                            : null;
+                        $created = $sourceTagging->added >= $record->time
+                            ? $record->time
+                            : $sourceTagging->added;
+                        $modified = $sourceTagging->added < $record->time
+                            ? $record->time
+                            : ($sourceTagging->added > $record->time ? $sourceTagging->added: null);
+                    }
                 } else {
                     $status = 'approved';
                     $ownerId = null;
