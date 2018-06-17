@@ -242,6 +242,181 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             count($mapExhibitIds)), Zend_Log::INFO);
     }
 
+    protected function _upgradeDataExhibitSettings()
+    {
+        $recordType = 'Exhibit';
+
+        $totalRecords = total_records($recordType);
+        if (empty($totalRecords)) {
+            return;
+        }
+        // Progress is managed by all exhibits, pages, blocks and attachments.
+
+        $db = $this->_db;
+        $target = $this->getTarget();
+        $targetDb = $target->getDb();
+
+        // Prepare options.
+        $searchResourceTypes = $this->getProcessor('Core/Site')->upgradeSearchRecordTypes();
+        $showEmptyProperties = (string) get_option('show_empty_elements');
+        $upgradeShowVocabularyHeadings = (string) get_option('show_element_set_headings');
+        $tagDelimiter = (string) get_option('tag_delimiter');
+        $useAdvancedSearch = $this->_getThemeOption('use_advanced_search');
+        $useSquareThumbnail = (string) get_option('use_square_thumbnail');
+
+        // The process uses the regular queries of Omeka in order to keep
+        // only good records and to manage filters.
+        $table = $db->getTable($recordType);
+
+        // Prepare the mapping  of file ids.
+        $mappedFileIds = $this->fetchMappedIds('File');
+        $mappedExhibitIds = $this->fetchMappedIds('Exhibit');
+        $mainSiteTheme = $this->getSiteTheme();
+        $defaultSettings = $this->getProcessor('Core/Themes')->prepareThemeSettings();
+
+        $exhibits = $table->findBy(array());
+        foreach ($exhibits as $exhibit) {
+            if (!isset($mappedExhibitIds[$exhibit->id])) {
+                continue;
+            }
+            $siteId = $mappedExhibitIds[$exhibit->id];
+
+            // Set the site settings.
+            $target->saveSiteSetting('upgrade_search_resource_types', $searchResourceTypes, $siteId);
+            $target->saveSiteSetting('upgrade_show_empty_properties', $showEmptyProperties, $siteId);
+            $target->saveSiteSetting('upgrade_show_vocabulary_headings', $upgradeShowVocabularyHeadings, $siteId);
+            $target->saveSiteSetting('upgrade_tag_delimiter', $tagDelimiter, $siteId);
+            $target->saveSiteSetting('upgrade_use_advanced_search', $useAdvancedSearch, $siteId);
+            $target->saveSiteSetting('upgrade_use_square_thumbnail', $useSquareThumbnail, $siteId);
+
+            // Set the theme settings.
+            $theme = $exhibit->theme ?: $mainSiteTheme;
+            $settings = isset($defaultSettings[$theme])
+                ? $defaultSettings[$theme]
+                : array();
+            // Remove the option for the homepage.
+            $settings['use_homepage_template'] = '0';
+            $nameSetting = 'theme_settings_' . $theme;
+            $target->saveSiteSetting($nameSetting, $settings, $siteId);
+        }
+    }
+
+    protected function _upgradeDataExhibitSummary()
+    {
+        $recordType = 'Exhibit';
+
+        $totalRecords = total_records($recordType);
+        if (empty($totalRecords)) {
+            return;
+        }
+        // Progress is managed by all exhibits, pages, blocks and attachments.
+
+        $db = $this->_db;
+        $target = $this->getTarget();
+        $targetDb = $target->getDb();
+
+        // The process uses the regular queries of Omeka in order to keep
+        // only good records and to manage filters.
+        $table = $db->getTable($recordType);
+
+        $mappedExhibitIds = $this->fetchMappedIds('Exhibit');
+        $mappedFileIds = $this->fetchMappedIds('File');
+
+        $exhibits = $table->findBy(array());
+        foreach ($exhibits as $exhibit) {
+            $toInerts = array();
+            if (!isset($mappedExhibitIds[$exhibit->id])) {
+                continue;
+            }
+            $siteId = $mappedExhibitIds[$exhibit->id];
+
+            $hasSummary = !empty($exhibit->cover_image_file_id)
+                || !empty($exhibit->description)
+                || !empty($exhibit->credits);
+            if (!$hasSummary) {
+                continue;
+            }
+
+            $id = null;
+
+            $toInsert = array();
+            $toInsert['id'] = $id;
+            $toInsert['site_id'] = $siteId;
+            $toInsert['slug'] = 'summary';
+            $toInsert['title'] = __('Summary');
+            $toInsert['created'] = $this->getDatetime();
+            $toInsert['modified'] = $this->getDatetime();
+            $toInserts['site_page'][] = $target->cleanQuote($toInsert);
+
+            $id = 'LAST_INSERT_ID()';
+            $position = 0;
+
+            $toInsert = array();
+            $toInsert['id'] = null;
+            $toInsert['page_id'] = $id;
+            $toInsert['layout'] = 'pageTitle';
+            $toInsert['data'] = $target->toJson(array());
+            $toInsert['position'] = ++$position;
+            $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
+
+            if ($exhibit->cover_image_file_id) {
+                $toInsert = array();
+                $toInsert['id'] = null;
+                $toInsert['page_id'] = $id;
+                $toInsert['layout'] = 'media';
+                $toInsert['data'] = $target->toJson(array(
+                    'thumbnail_type' => 'large',
+                    'alignment' => 'left',
+                    'show_title_option' => 'item_title',
+                ));
+                $toInsert['position'] = ++$position;
+                $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
+
+                if (!empty($mappedFileIds[$exhibit->cover_image_file_id])) {
+                    $mediaId = $mappedFileIds[$exhibit->cover_image_file_id];
+                    $file = get_record_by_id('File', $exhibit->cover_image_file_id);
+
+                    $toInsert = array();
+                    $toInsert['id'] = null;
+                    // Last inserted id + 1 because the last inserted id is the
+                    // first of the previous table, so the page title here.
+                    $toInsert['block_id'] = 'LAST_INSERT_ID() + 1';
+                    $toInsert['item_id'] = $file->item_id;
+                    $toInsert['media_id'] = $mediaId;
+                    $toInsert['caption'] = '';
+                    $toInsert['position'] = 1;
+                    $toInserts['site_block_attachment'][] = $target->cleanQuote($toInsert, 'block_id');
+                }
+            }
+
+            if ($exhibit->description) {
+                $toInsert = array();
+                $toInsert['id'] = null;
+                $toInsert['page_id'] = $id;
+                $toInsert['layout'] = 'html';
+                $toInsert['data'] = $target->toJson(array(
+                    'html' => $exhibit->description,
+                ));
+                $toInsert['position'] = ++$position;
+                $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
+            }
+
+            if ($exhibit->credits) {
+                $toInsert = array();
+                $toInsert['id'] = null;
+                $toInsert['page_id'] = $id;
+                $toInsert['layout'] = 'html';
+                $toInsert['data'] = $target->toJson(array(
+                    'html' => '<p>' . __('%sCredits%s: %s', '<strong>', '</strong>', $exhibit->credits) . '</p>',
+                ));
+                $toInsert['position'] = ++$position;
+                $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
+            }
+
+            $target->insertRowsInTables($toInserts);
+        }
+    }
+
     protected function _upgradeDataExhibitPages()
     {
         $recordType = 'ExhibitPage';
@@ -355,6 +530,85 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
         $this->_log('[' . __FUNCTION__ . ']: ' . __('All exhibit pages (%d) have been upgraded.',
                 count($mapExhibitPageIds)),
             Zend_Log::INFO);
+    }
+
+    protected function _upgradeDataExhibitNavigation()
+    {
+        $recordType = 'Exhibit';
+
+        $totalRecords = total_records($recordType);
+        if (empty($totalRecords)) {
+            return;
+        }
+        // Progress is managed by all exhibits, pages, blocks and attachments.
+
+        $db = $this->_db;
+        $target = $this->getTarget();
+        $targetDb = $target->getDb();
+
+        // The process uses the regular queries of Omeka in order to keep
+        // only good records and to manage filters.
+        $table = $db->getTable($recordType);
+
+        $mappedExhibitIds = $this->fetchMappedIds('Exhibit');
+
+        $exhibits = $table->findBy(array());
+        foreach ($exhibits as $exhibit) {
+            if (!isset($mappedExhibitIds[$exhibit->id])) {
+                continue;
+            }
+            $siteId = $mappedExhibitIds[$exhibit->id];
+
+            $sitePages = array();
+
+            // Add existing pages (summary).
+            $hasSummary = !empty($exhibit->cover_image_file_id)
+                || !empty($exhibit->description)
+                || !empty($exhibit->credits);
+            if ($hasSummary) {
+                $select = $targetDb->select()
+                    ->from('site_page', 'id')
+                    ->order('id')
+                    ->where('site_id = ' . $siteId);
+                $page = $targetDb->fetchOne($select);
+                if ($page) {
+                    $sitePages[] = array(
+                        'type' => 'page',
+                        'data' => array(
+                            'label' => '',
+                            'id' => $page,
+                        ));
+                }
+            }
+
+            $pages = $exhibit->getPagesByParent();
+            if ($pages && isset($pages[0])) {
+                foreach ($pages[0] as $topPage) {
+                    $sitePages[] = $this->_addBranch($pages, $topPage, array());
+                }
+            }
+
+            if (empty($sitePages)) {
+                continue;
+            }
+
+            // Check if there is an exhibit.
+            $select = $targetDb->select()
+                ->from('site')
+                ->where('id = ?', $siteId);
+            $result = $targetDb->fetchRow($select);
+            if (!$result) {
+                throw new UpgradeToOmekaS_Exception(
+                    __('An error occurred during the upgrade of the navigation of the exhibit #%d.', $exhibit->id));
+            }
+
+            $where = array();
+            $where[] = 'id = ' . $siteId;
+            $result = $targetDb->update(
+                'site',
+                array('navigation' => $this->toJson($sitePages)),
+                $where);
+        }
     }
 
     protected function _upgradeDataExhibitPageBlocks()
@@ -595,260 +849,6 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
         if (version_compare($plugin->getDbVersion(), '3.3.4', '<')) {
             $this->_log('[' . __FUNCTION__ . ']: ' . __('The new field "menu_title" is not yet upgradable (Exhibit >= 3.3.4).'),
                 Zend_Log::INFO);
-        }
-    }
-
-    protected function _upgradeDataExhibitSettings()
-    {
-        $recordType = 'Exhibit';
-
-        $totalRecords = total_records($recordType);
-        if (empty($totalRecords)) {
-            return;
-        }
-        // Progress is managed by all exhibits, pages, blocks and attachments.
-
-        $db = $this->_db;
-        $target = $this->getTarget();
-        $targetDb = $target->getDb();
-
-        // Prepare options.
-        $searchResourceTypes = $this->getProcessor('Core/Site')->upgradeSearchRecordTypes();
-        $showEmptyProperties = (string) get_option('show_empty_elements');
-        $upgradeShowVocabularyHeadings = (string) get_option('show_element_set_headings');
-        $tagDelimiter = (string) get_option('tag_delimiter');
-        $useAdvancedSearch = $this->_getThemeOption('use_advanced_search');
-        $useSquareThumbnail = (string) get_option('use_square_thumbnail');
-
-        // The process uses the regular queries of Omeka in order to keep
-        // only good records and to manage filters.
-        $table = $db->getTable($recordType);
-
-        // Prepare the mapping  of file ids.
-        $mappedFileIds = $this->fetchMappedIds('File');
-        $mappedExhibitIds = $this->fetchMappedIds('Exhibit');
-        $mainSiteTheme = $this->getSiteTheme();
-        $defaultSettings = $this->getProcessor('Core/Themes')->prepareThemeSettings();
-
-        $exhibits = $table->findBy(array());
-        foreach ($exhibits as $exhibit) {
-            if (!isset($mappedExhibitIds[$exhibit->id])) {
-                continue;
-            }
-            $siteId = $mappedExhibitIds[$exhibit->id];
-
-            // Set the site settings.
-            $target->saveSiteSetting('upgrade_search_resource_types', $searchResourceTypes, $siteId);
-            $target->saveSiteSetting('upgrade_show_empty_properties', $showEmptyProperties, $siteId);
-            $target->saveSiteSetting('upgrade_show_vocabulary_headings', $upgradeShowVocabularyHeadings, $siteId);
-            $target->saveSiteSetting('upgrade_tag_delimiter', $tagDelimiter, $siteId);
-            $target->saveSiteSetting('upgrade_use_advanced_search', $useAdvancedSearch, $siteId);
-            $target->saveSiteSetting('upgrade_use_square_thumbnail', $useSquareThumbnail, $siteId);
-
-            // Set the theme settings.
-            $theme = $exhibit->theme ?: $mainSiteTheme;
-            $settings = isset($defaultSettings[$theme])
-                ? $defaultSettings[$theme]
-                : array();
-            // Remove the option for the homepage.
-            $settings['use_homepage_template'] = '0';
-            $nameSetting = 'theme_settings_' . $theme;
-            $target->saveSiteSetting($nameSetting, $settings, $siteId);
-        }
-    }
-
-    protected function _upgradeDataExhibitSummary()
-    {
-        $recordType = 'Exhibit';
-
-        $totalRecords = total_records($recordType);
-        if (empty($totalRecords)) {
-            return;
-        }
-        // Progress is managed by all exhibits, pages, blocks and attachments.
-
-        $db = $this->_db;
-        $target = $this->getTarget();
-        $targetDb = $target->getDb();
-
-        // The process uses the regular queries of Omeka in order to keep
-        // only good records and to manage filters.
-        $table = $db->getTable($recordType);
-
-        $mappedExhibitIds = $this->fetchMappedIds('Exhibit');
-        $mappedFileIds = $this->fetchMappedIds('File');
-
-        $exhibits = $table->findBy(array());
-        foreach ($exhibits as $exhibit) {
-            $toInerts = array();
-            if (!isset($mappedExhibitIds[$exhibit->id])) {
-                continue;
-            }
-            $siteId = $mappedExhibitIds[$exhibit->id];
-
-            $hasSummary = !empty($exhibit->cover_image_file_id)
-                || !empty($exhibit->description)
-                || !empty($exhibit->credits);
-            if (!$hasSummary) {
-                continue;
-            }
-
-            $id = null;
-
-            $toInsert = array();
-            $toInsert['id'] = $id;
-            $toInsert['site_id'] = $siteId;
-            $toInsert['slug'] = 'summary';
-            $toInsert['title'] = __('Summary');
-            $toInsert['created'] = $this->getDatetime();
-            $toInsert['modified'] = $this->getDatetime();
-            $toInserts['site_page'][] = $target->cleanQuote($toInsert);
-
-            $id = 'LAST_INSERT_ID()';
-            $position = 0;
-
-            $toInsert = array();
-            $toInsert['id'] = null;
-            $toInsert['page_id'] = $id;
-            $toInsert['layout'] = 'pageTitle';
-            $toInsert['data'] = $target->toJson(array());
-            $toInsert['position'] = ++$position;
-            $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
-
-            if ($exhibit->cover_image_file_id) {
-                $toInsert = array();
-                $toInsert['id'] = null;
-                $toInsert['page_id'] = $id;
-                $toInsert['layout'] = 'media';
-                $toInsert['data'] = $target->toJson(array(
-                    'thumbnail_type' => 'large',
-                    'alignment' => 'left',
-                    'show_title_option' => 'item_title',
-                ));
-                $toInsert['position'] = ++$position;
-                $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
-
-                if (!empty($mappedFileIds[$exhibit->cover_image_file_id])) {
-                    $mediaId = $mappedFileIds[$exhibit->cover_image_file_id];
-                    $file = get_record_by_id('File', $exhibit->cover_image_file_id);
-
-                    $toInsert = array();
-                    $toInsert['id'] = null;
-                    // Last inserted id + 1 because the last inserted id is the
-                    // first of the previous table, so the page title here.
-                    $toInsert['block_id'] = 'LAST_INSERT_ID() + 1';
-                    $toInsert['item_id'] = $file->item_id;
-                    $toInsert['media_id'] = $mediaId;
-                    $toInsert['caption'] = '';
-                    $toInsert['position'] = 1;
-                    $toInserts['site_block_attachment'][] = $target->cleanQuote($toInsert, 'block_id');
-                }
-            }
-
-            if ($exhibit->description) {
-                $toInsert = array();
-                $toInsert['id'] = null;
-                $toInsert['page_id'] = $id;
-                $toInsert['layout'] = 'html';
-                $toInsert['data'] = $target->toJson(array(
-                    'html' => $exhibit->description,
-                ));
-                $toInsert['position'] = ++$position;
-                $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
-            }
-
-            if ($exhibit->credits) {
-                $toInsert = array();
-                $toInsert['id'] = null;
-                $toInsert['page_id'] = $id;
-                $toInsert['layout'] = 'html';
-                $toInsert['data'] = $target->toJson(array(
-                    'html' => '<p>' . __('%sCredits%s: %s', '<strong>', '</strong>', $exhibit->credits) . '</p>',
-                ));
-                $toInsert['position'] = ++$position;
-                $toInserts['site_page_block'][] = $target->cleanQuote($toInsert, 'page_id');
-            }
-
-            $target->insertRowsInTables($toInserts);
-        }
-    }
-
-    protected function _upgradeDataExhibitNavigation()
-    {
-        $recordType = 'Exhibit';
-
-        $totalRecords = total_records($recordType);
-        if (empty($totalRecords)) {
-            return;
-        }
-        // Progress is managed by all exhibits, pages, blocks and attachments.
-
-        $db = $this->_db;
-        $target = $this->getTarget();
-        $targetDb = $target->getDb();
-
-        // The process uses the regular queries of Omeka in order to keep
-        // only good records and to manage filters.
-        $table = $db->getTable($recordType);
-
-        $mappedExhibitIds = $this->fetchMappedIds('Exhibit');
-
-        $exhibits = $table->findBy(array());
-        foreach ($exhibits as $exhibit) {
-            if (!isset($mappedExhibitIds[$exhibit->id])) {
-                continue;
-            }
-            $siteId = $mappedExhibitIds[$exhibit->id];
-
-            $sitePages = array();
-
-            // Add existing pages (summary).
-            $hasSummary = !empty($exhibit->cover_image_file_id)
-                || !empty($exhibit->description)
-                || !empty($exhibit->credits);
-            if ($hasSummary) {
-                $select = $targetDb->select()
-                    ->from('site_page', 'id')
-                    ->order('id')
-                    ->where('site_id = ' . $siteId);
-                $page = $targetDb->fetchOne($select);
-                if ($page) {
-                    $sitePages[] = array(
-                        'type' => 'page',
-                        'data' => array(
-                            'label' => '',
-                            'id' => $page,
-                        ));
-                }
-            }
-
-            $pages = $exhibit->getPagesByParent();
-            if ($pages && isset($pages[0])) {
-                foreach ($pages[0] as $topPage) {
-                    $sitePages[] = $this->_addBranch($pages, $topPage, array());
-                }
-            }
-
-            if (empty($sitePages)) {
-                continue;
-            }
-
-            // Check if there is an exhibit.
-            $select = $targetDb->select()
-                ->from('site')
-                ->where('id = ?', $siteId);
-            $result = $targetDb->fetchRow($select);
-            if (!$result) {
-                throw new UpgradeToOmekaS_Exception(
-                    __('An error occurred during the upgrade of the navigation of the exhibit #%d.', $exhibit->id));
-            }
-
-            $where = array();
-            $where[] = 'id = ' . $siteId;
-            $result = $targetDb->update(
-                'site',
-                array('navigation' => $this->toJson($sitePages)),
-                $where);
         }
     }
 
