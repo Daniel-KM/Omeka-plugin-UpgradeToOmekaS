@@ -233,7 +233,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 throw new UpgradeToOmekaS_Exception(
                     __('An error occurred during the upgrade of some exhibits.'));
             }
-            $mapExhibitIds[(integer) $key] = (integer) $id;
+            $mapExhibitIds[(int) $key] = (int) $id;
         }
 
         $this->storeMappedIds('Exhibit', $mapExhibitIds);
@@ -536,7 +536,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 throw new UpgradeToOmekaS_Exception(
                     __('An error occurred during the upgrade of some exhibit pages.'));
             }
-            $mapExhibitPageIds[(integer) $key] = (integer) $id;
+            $mapExhibitPageIds[(int) $key] = (int) $id;
         }
 
         $this->storeMappedIds('ExhibitPage', $mapExhibitPageIds);
@@ -779,7 +779,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             // When a block is divided, keep only the first.
             $key = strtok($key, '-');
             if (!isset($mapExhibitBlockIds[$key])) {
-                $mapExhibitBlockIds[(integer) $key] = (integer) $id;
+                $mapExhibitBlockIds[(int) $key] = (int) $id;
             }
         }
 

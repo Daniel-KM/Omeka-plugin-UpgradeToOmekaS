@@ -223,7 +223,7 @@ class UpgradeToOmekaS_Helper_Target
         $select = $db->select()
             ->from($table, array(new Zend_Db_Expr('COUNT(*)')));
         $result = $db->fetchOne($select);
-        return (integer) $result;
+        return (int) $result;
     }
 
     /**

@@ -60,7 +60,7 @@ class UpgradeToOmekaS_Processor_CleanUrl extends UpgradeToOmekaS_Processor_Abstr
             switch ($option) {
                 case 'clean_url_identifier_element':
                     // 10 is the hard set id of "dcterms:identifier" in default install.
-                    $value = isset($mapping[$value]) ? (integer) $mapping[$value] : 10;
+                    $value = isset($mapping[$value]) ? (int) $mapping[$value] : 10;
                     break;
                 case 'clean_url_item_default':
                 case 'clean_url_file_default':

@@ -586,7 +586,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         $values = isset($config->fileDerivativesy->strategyOptions) ? $config->fileDerivativesy->strategyOptions->toArray() : null;
         // ; fileDerivatives.strategyOptions.page = "0"
         if (isset($values['page']) && $values['page'] !== '0') {
-            $targetConfig['thumbnails']['thumbnailer_options']['page'] = (integer) $values['page'];
+            $targetConfig['thumbnails']['thumbnailer_options']['page'] = (int) $values['page'];
         }
         // ; fileDerivatives.strategyOptions.gravity = "center"
         if (isset($values['gravity']) && $values['gravity'] !== 'center') {
@@ -725,7 +725,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
                     $totalAdmins++;
                 }
 
-                $id = (integer) $record->id;
+                $id = (int) $record->id;
 
                 // Give the role of global admin to the current user, whatever
                 // the mapping.
@@ -741,7 +741,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
                 $toInsert['modified'] = null;
                 $toInsert['password_hash'] = null;
                 $toInsert['role'] = $role;
-                $toInsert['is_active'] = (integer) (bool) $record->active;
+                $toInsert['is_active'] = (int) (bool) $record->active;
                 $toInserts[] = $target->cleanQuote($toInsert);
             }
 

@@ -110,7 +110,7 @@ ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REF
 
             $toInserts = array();
             foreach ($records as $record) {
-                $itemId = (integer) $record->item_id;
+                $itemId = (int) $record->item_id;
                 $mediaId = $targetDb->fetchOne(sprintf($sqlMediaId, $itemId)) ?: null;
 
                 // Improved version.

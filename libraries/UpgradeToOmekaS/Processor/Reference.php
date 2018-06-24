@@ -92,7 +92,7 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
                     foreach ($value as $slug => &$slugData) {
                         $slugData['type'] = $slugData['type'] === 'ItemType' ? 'resource_classes' : 'properties';
                         if (isset($mapping[$slugData['type']][$slugData['id']])) {
-                            $slugData['id'] = (integer) $mapping[$slugData['type']][$slugData['id']];
+                            $slugData['id'] = (int) $mapping[$slugData['type']][$slugData['id']];
                         } else {
                             $slugData['id'] = 0;
                             $this->_log('[' . __FUNCTION__ . ']: ' . __('The reference "%s" cannot be upgraded.', $slugData['label']),

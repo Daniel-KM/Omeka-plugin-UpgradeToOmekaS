@@ -49,7 +49,7 @@ class UpgradeToOmekaS_Processor_CoreRecordsTest extends UpgradeToOmekaS_Test_App
         $this->assertEquals(1, $result);
         $sql = 'SELECT * FROM item_set;';
         $result = $targetDb->fetchRow($sql);
-        $itemSetId = (integer) $result['id'];
+        $itemSetId = (int) $result['id'];
 
         $result = $target->totalRows('resource');
         $this->assertEquals(1, $result);
@@ -58,7 +58,7 @@ class UpgradeToOmekaS_Processor_CoreRecordsTest extends UpgradeToOmekaS_Test_App
 
         $itemSet = array(
             'id' => $itemSetId,
-            'owner_id' => (integer) $this->user->id,
+            'owner_id' => (int) $this->user->id,
             'resource_template_id' => 1,
             'is_public' => 0,
             'resource_type' => 'Omeka\Entity\ItemSet',

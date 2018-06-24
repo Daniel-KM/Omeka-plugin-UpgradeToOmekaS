@@ -73,7 +73,7 @@ class UpgradeToOmekaS_Processor_SimplePages extends UpgradeToOmekaS_Processor_Ab
                 }
                 $pageSlugs[] = $slug;
 
-                $id = $previousRecordsExistsExceptHomepage ? null : (integer) $record->id;
+                $id = $previousRecordsExistsExceptHomepage ? null : (int) $record->id;
                 $toInsert = array();
                 $toInsert['id'] = $id;
                 $toInsert['site_id'] = $siteId;

@@ -125,7 +125,7 @@ class UpgradeToOmekaS_IndexController extends Omeka_Controller_AbstractActionCon
 
         $form = new UpgradeToOmekaS_Form_Main(array(
             'unupgradablePlugins' => count($prechecksPlugins),
-            'allowThemesOnly' => (integer) $allowThemesOnly,
+            'allowThemesOnly' => (int) $allowThemesOnly,
         ));
         $form->setAction($this->_helper->url('index'));
         $this->view->form = $form;
@@ -1033,7 +1033,7 @@ class UpgradeToOmekaS_IndexController extends Omeka_Controller_AbstractActionCon
                 if (strpos($key, $name) === 0) {
                     $subname = substr($key, strlen($name));
                     if (is_numeric($subname)) {
-                        $subname = (integer) $subname;
+                        $subname = (int) $subname;
                     }
                     $params[$set][$subname] = $value;
                     unset($params[$key]);

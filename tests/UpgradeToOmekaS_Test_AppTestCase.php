@@ -346,6 +346,6 @@ PLUGIN;
         $sql = 'SELECT MAX(id) FROM item;';
         $itemId = $targetDb->fetchOne($sql);
 
-        return (integer) $itemId;
+        return (int) $itemId;
     }
 }

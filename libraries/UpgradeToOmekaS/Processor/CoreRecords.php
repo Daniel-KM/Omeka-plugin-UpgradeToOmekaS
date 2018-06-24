@@ -203,7 +203,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
             $toInsert = array();
             $toInsert['id'] = null;
             $toInsert['site_id'] = $siteId;
-            $toInsert['item_set_id'] = (integer) $id;
+            $toInsert['item_set_id'] = (int) $id;
             $toInsert['position'] = ++$position;
             $toInserts[] = $target->cleanQuote($toInsert);
         }
@@ -402,7 +402,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                             $resourceClassId = null;
                             ++$totalItemTypesUnmapped;
                         }
-                        $isPublic = (integer) (bool) $record->public;
+                        $isPublic = (int) (bool) $record->public;
                         break;
                     case 'Collection':
                         $id = null;
@@ -410,7 +410,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                             ? $targetUserIds[$record->owner_id]
                             : null;
                         $resourceClassId = null;
-                        $isPublic = (integer) (bool) $record->public;
+                        $isPublic = (int) (bool) $record->public;
                         break;
                     case 'File':
                         $id = null;
@@ -440,7 +440,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                     ++$baseId;
                 }
                 else {
-                    $this->_mappingIds[$recordType][$record->id] = (integer) $id;
+                    $this->_mappingIds[$recordType][$record->id] = (int) $id;
                 }
 
                 $toInsert = array();
@@ -484,7 +484,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                         // compatibility module).
                         $toInsert['sha256'] = null;
                         $toInsert['has_original'] = 1;
-                        $toInsert['has_thumbnails'] = (integer) (bool) $record->has_derivative_image;
+                        $toInsert['has_thumbnails'] = (int) (bool) $record->has_derivative_image;
                         $toInsert['position'] = $record->order ?: 1;
                         $toInsert['lang'] = null;
                         break;
@@ -760,7 +760,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
             $targetDb = $this->getTarget()->getDb();
             $select = $targetDb->select()
                 ->from('item_set', array(new Zend_Db_Expr('MIN(id)')));
-            $this->_itemSetSiteId = (integer) $targetDb->fetchOne($select);
+            $this->_itemSetSiteId = (int) $targetDb->fetchOne($select);
         }
         return $this->_itemSetSiteId;
     }

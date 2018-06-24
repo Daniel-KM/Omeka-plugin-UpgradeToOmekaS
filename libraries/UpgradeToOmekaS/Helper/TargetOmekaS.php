@@ -79,7 +79,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
             $where = array();
             $where[] = 'id = ' . $db->quote($name);
             if ($table == 'site_setting') {
-                $where[] = 'site_id = ' . (integer) $siteId;
+                $where[] = 'site_id = ' . (int) $siteId;
             }
             $result = $db->update($table, array('value' => $value), $where);
         }
