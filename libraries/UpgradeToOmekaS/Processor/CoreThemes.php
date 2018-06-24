@@ -373,11 +373,22 @@ OUTPUT;
                     : '';
             }
 
+            // The theme option "Item FileGallery" is now the site setting
+            // "item_media_embed", reverted.
+            if (array_key_exists('item_file_gallery', $values)) {
+                $target->saveSiteSetting('item_media_embed', $values['item_file_gallery'] ? '0' : '1', $siteId);
+                unset($values['item_file_gallery']);
+            }
+
             // Add the option for the homepage.
             $values['use_homepage_template'] = '0';
 
             $result[$theme] = $values;
         }
+
+        $this->_log('[' . __FUNCTION__ . ']: ' . __('The theme option "Item FileGallery" is now the site setting "item_media_embed", reverted.'),
+            Zend_Log::INFO);
+
         return $result;
     }
 
@@ -546,10 +557,12 @@ OUTPUT;
                     }
 
                     $type = $element->type;
+
                     // Update the class if possible.
                     if (isset($mappingFormElements[$type])) {
                         // Update type.
                         $element->type = $mappingFormElements[$type];
+                        $toComment = false;
                         // Manage updated elements.
                         switch ($key) {
                             case 'logo':
@@ -564,9 +577,18 @@ OUTPUT;
                                 $element->options->label = 'Footer Content';
                                 $element->options->info = 'HTML content to appear in the footer';
                                 break;
+                            // The theme option "Item FileGallery" is now the site setting
+                            // "item_media_embed", reverted.
+                            case $element->name === 'item_file_gallery':
+                                $toComment = true;
+                                break;
                         }
                         // TODO Check validators and constraints or comment them.
-                        $elements[$key] = $element;
+                        if ($toComment) {
+                            $commented[$key] = $element;
+                        } else {
+                            $elements[$key] = $element;
+                        }
                     }
                     // Save as comment.
                     else {
