@@ -145,7 +145,7 @@ return array(
     '~\bplugin_page_content\(\)~'                       => 'fire_plugin_hook(\'public_content_top\', array(\'view\' => $this))',
     '~\bplugin_footer\(\)~'                             => 'fire_plugin_hook(\'public_footer\', array(\'view\' => $this))',
 
-    '~\bsettings\((.+)\)~'                              => 'get_theme_option(\1)',
+    '~\bsettings\((.+)\)~'                              => '$this->setting(\1)',
     '~\bqueue_css\((.+)\)~'                             => 'echo queue_css_file(\1)',
     '~\bqueue_js\((.+)\)~'                              => 'echo queue_js_file(\1)',
     '~\bdisplay_css\(\)~'                               => 'echo head_css()',
@@ -267,7 +267,16 @@ return array(
     '~\b(insert_collection)\(~'                     => '$this->upgrade()->\1(',
     '~\b(insert_element_set)\(~'                    => '$this->upgrade()->\1(',
     '~\b(release_object)\(~'                        => '$this->upgrade()->\1(',
-    '~\b(get_theme_option)\(~'                      => '$this->upgrade()->\1(',
+    // Theme options may be the label of the field, that should be converted
+    // into lowercase and space as "_", so in a two step process (until five
+    // words). The lower case is processed via preg_replace_callback() during
+    // another step because preg_replace() doesn't manage "\L".
+    // '~\b(get_theme_option)\([\'"]([\w\s]+)[\'"]\)~'                             => '$this->themeSetting(\'\L\2\')',
+    '~\b(get_theme_option)\([\'"]([\w\s]+)[\'"]\)~'                             => '$this->themeSetting(\'\2\')',
+    '~\$this->themeSetting\([\'"](\w+)\s+(\w+)[\'"]\)~'                         => '$this->themeSetting(\'\1_\2\')',
+    '~\$this->themeSetting\([\'"](\w+)\s+(\w+)\s+(\w+)[\'"]\)~'                 => '$this->themeSetting(\'\1_\2_\3\')',
+    '~\$this->themeSetting\([\'"](\w+)\s+(\w+)\s+(\w+)\s+(\w+)[\'"]\)~'         => '$this->themeSetting(\'\1_\2_\3_\4\')',
+    '~\$this->themeSetting\([\'"](\w+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\w+)[\'"]\)~' => '$this->themeSetting(\'\1_\2_\3_\4_\5\')',
     '~\b(set_theme_option)\(~'                      => '$this->upgrade()->\1(',
     '~\b(get_user_roles)\(~'                        => '$this->upgrade()->\1(',
     '~\b(element_exists)\(~'                        => '$this->upgrade()->\1(',
