@@ -769,6 +769,7 @@ OUTPUT;
 <?php
 /**
  * Theme "{$name}" of Omeka Classic upgraded on {$this->getDatetime()}.
+
 OUTPUT;
             $output .= <<<'OUTPUT'
  *
@@ -949,6 +950,7 @@ OUTPUT;
 <?php
 /**
  * Theme "{$name}" of Omeka Classic upgraded on {$this->getDatetime()}.
+
 OUTPUT;
             $base .= <<<'OUTPUT'
  *
