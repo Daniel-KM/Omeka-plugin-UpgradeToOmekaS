@@ -163,7 +163,7 @@ omeka_target_version = "2.6.9"
 tags = "archive, upgrade"
 PLUGIN;
         $result = file_put_contents($path, $content);
-        $this->assertTrue((boolean) $result);
+        $this->assertTrue((bool) $result);
     }
 
     protected function _removeStubPlugin()

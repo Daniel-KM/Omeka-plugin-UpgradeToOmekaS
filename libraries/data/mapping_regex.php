@@ -162,7 +162,7 @@ return array(
     '~\blink_to_next_item\(\)~'                         => 'link_to_next_item_show()',
     '~\blink_to_browse_items\(\)~'                      => 'link_to_items_browse($this->translate(\'Browse Items\'))',
     '~\blink_to_browse_items\(~'                        => 'link_to_items_browse(',
-    '~\bitem_belongs_to_collection\(\)~'                => '(boolean) count($item->itemSets())',
+    '~\bitem_belongs_to_collection\(\)~'                => '(bool) count($item->itemSets())',
     '~\bitem_citation\(\)~'                             => '$this->upgrade()->getCitation($item)',
     '~\bitem_has_tags\(\)~'                             => '!empty($item->tags) /* Unmanaged in Omeka S. */',
     '~\bitem_has_type\(\)~'                             => '!empty($item->resourceClass())',
@@ -373,7 +373,7 @@ return array(
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")collection(?: |_)name(?:\'|")\s*\)~i'        => '\1->itemSets() /* TODO Manage multiple item sets. */ ? (\1->itemSets()[key(\1->itemSets())])->displayTitle() : null',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")item(?: |_)type(?: |_)id(?:\'|")\s*\)~i'     => '\1->resourceClass() ? \1->resourceClass()->localName() : null',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")item(?: |_)type(?: |_)name(?:\'|")\s*\)~i'   => '\1->resourceClass() ? \1->resourceClass()->label() : null',
-    '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")has(?: |_)files(?:\'|")\s*\)~i'              => '(boolean) count(\1->media())',
+    '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")has(?: |_)files(?:\'|")\s*\)~i'              => '(bool) count(\1->media())',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")has(?: |_)tags(?:\'|")\s*\)~i'               => '!empty(\1->tags) /* Unmanaged in Omeka S. */',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")file(?: |_)count(?:\'|")\s*\)~i'             => 'count(\1->media())',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")has(?: |_)thumbnail(?:\'|")\s*\)~i'          => '\1->primaryMedia() ? \1->primaryMedia()->hasThumbnails() : false',
@@ -726,7 +726,7 @@ return array(
     '~(\'public_collections_browse_each\')~'        => '\1 /* Unmanaged in Omeka S. */',
 
     '~\$current_collection~'                        => '$itemSet',
-    '~(\$[a-z]\w+)\-\>hasContributor\(\)~'          => '(boolean) \1->value(\'dcterms:contributor\')',
+    '~(\$[a-z]\w+)\-\>hasContributor\(\)~'          => '(bool) \1->value(\'dcterms:contributor\')',
 
     '~(\$[a-z_]\w*)\s*\-\>\s*Files\b~'              => '\1->media()',
     '~(\$[a-z_]\w*)\s*\-\>\s*Items\b~'              => '\1->items()',

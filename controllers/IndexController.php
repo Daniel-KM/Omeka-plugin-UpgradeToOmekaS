@@ -406,7 +406,7 @@ class UpgradeToOmekaS_IndexController extends Omeka_Controller_AbstractActionCon
         }
         // Wake up the site.
         else {
-            $message = (boolean) get_option('upgrade_to_omeka_s_service_down')
+            $message = (bool) get_option('upgrade_to_omeka_s_service_down')
                 ? __('The site is opened again.')
                 : __('The site is already open.');
             set_option('upgrade_to_omeka_s_service_down', false);
@@ -417,7 +417,7 @@ class UpgradeToOmekaS_IndexController extends Omeka_Controller_AbstractActionCon
 
     public function shutdownAction()
     {
-        $message = (boolean) get_option('upgrade_to_omeka_s_service_down')
+        $message = (bool) get_option('upgrade_to_omeka_s_service_down')
             ? __('The site is already down.')
             : __('The site has been set down.');
         set_option('upgrade_to_omeka_s_service_down', true);
@@ -726,17 +726,17 @@ class UpgradeToOmekaS_IndexController extends Omeka_Controller_AbstractActionCon
 
     protected function _isSiteDown()
     {
-        return (boolean) get_option('upgrade_to_omeka_s_service_down');
+        return (bool) get_option('upgrade_to_omeka_s_service_down');
     }
 
     protected function _hasLivingRunningJobs()
     {
-        return (boolean) $this->_getLivingRunningJobs(1);
+        return (bool) $this->_getLivingRunningJobs(1);
     }
 
     protected function _hasDeadRunningJobs()
     {
-        return (boolean) $this->_getDeadRunningJobs(1);
+        return (bool) $this->_getDeadRunningJobs(1);
     }
 
     /**
@@ -792,7 +792,7 @@ class UpgradeToOmekaS_IndexController extends Omeka_Controller_AbstractActionCon
             . DIRECTORY_SEPARATOR . 'security.ini';
         $settings = new Zend_Config_Ini($iniFile, 'upgrade-to-omeka-s');
         return isset($settings->button_themes_only)
-            ? (boolean) $settings->button_themes_only
+            ? (bool) $settings->button_themes_only
             : false;
     }
 

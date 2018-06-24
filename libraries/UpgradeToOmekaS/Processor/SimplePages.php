@@ -49,7 +49,7 @@ class UpgradeToOmekaS_Processor_SimplePages extends UpgradeToOmekaS_Processor_Ab
 
         // Check if there are already records for a warn.
         $totalExisting = $target->totalRows('site_page');
-        $previousRecordsExists = (boolean) $totalExisting;
+        $previousRecordsExists = (bool) $totalExisting;
         $previousRecordsExistsExceptHomepage = $previousRecordsExists > 1;
         // The homepage is automatically created.
         if ($previousRecordsExistsExceptHomepage) {

@@ -75,7 +75,7 @@ class UpgradeToOmekaS_Helper_Target
      */
     public function setIsProcessing($isProcessing)
     {
-        $this->_isProcessing = (boolean) $isProcessing;
+        $this->_isProcessing = (bool) $isProcessing;
     }
 
     /**

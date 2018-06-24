@@ -11,7 +11,7 @@ class UpgradeToOmekaS_Form_Validator extends Zend_Validate_Callback
      */
     static public function validateTrue($value)
     {
-        return (boolean) $value;
+        return (bool) $value;
     }
 
     static public function validateDateTimeZone($value)

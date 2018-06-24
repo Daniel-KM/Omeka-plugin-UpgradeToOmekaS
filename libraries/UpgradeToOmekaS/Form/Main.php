@@ -431,7 +431,7 @@ class UpgradeToOmekaS_Form_Main extends Omeka_Form
                     . ' ' . __('It can be installed automatically.')
                     . ($totalTags? ' ' . __('Without it, the %d tags will be lost.', $totalTags) : ''),
                 'required' => false,
-                'value' => ((boolean) $totalTags),
+                'value' => ((bool) $totalTags),
             ));
         }
 
@@ -715,7 +715,7 @@ class UpgradeToOmekaS_Form_Main extends Omeka_Form
      */
     public function setIsConfirmation($value)
     {
-        $this->_isConfirmation = (boolean) $value;
+        $this->_isConfirmation = (bool) $value;
     }
 
     /**

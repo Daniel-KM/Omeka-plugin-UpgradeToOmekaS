@@ -443,7 +443,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         // log.errors = false
         $value = isset($config->log->errors) ? $config->log->errors : null;
         if ($value) {
-            $targetConfig['logger']['log'] = (boolean) $value;
+            $targetConfig['logger']['log'] = (bool) $value;
         }
         // log.priority = Zend_Log::WARN
         // The priority is kept to NOTICE, except if it has been modified.
@@ -741,7 +741,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
                 $toInsert['modified'] = null;
                 $toInsert['password_hash'] = null;
                 $toInsert['role'] = $role;
-                $toInsert['is_active'] = (integer) (boolean) $record->active;
+                $toInsert['is_active'] = (integer) (bool) $record->active;
                 $toInserts[] = $target->cleanQuote($toInsert);
             }
 

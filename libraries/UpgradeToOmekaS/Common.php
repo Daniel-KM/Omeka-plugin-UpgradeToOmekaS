@@ -494,7 +494,7 @@ class UpgradeToOmekaS_Common
             $isTempFile = true;
             $input = tempnam(sys_get_temp_dir(), basename($zipFile));
             $handle = fopen($zipFile, 'rb');
-            $result = (boolean) file_put_contents($input, $handle);
+            $result = (bool) file_put_contents($input, $handle);
             @fclose($handle);
         }
         // Check the input file.
@@ -504,7 +504,7 @@ class UpgradeToOmekaS_Common
             }
             $isTempFile = false;
             $input = $zipFile;
-            $result = (boolean) filesize($input);
+            $result = (bool) filesize($input);
         }
 
         if (!empty($result)) {

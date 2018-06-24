@@ -402,7 +402,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                             $resourceClassId = null;
                             ++$totalItemTypesUnmapped;
                         }
-                        $isPublic = (integer) (boolean) $record->public;
+                        $isPublic = (integer) (bool) $record->public;
                         break;
                     case 'Collection':
                         $id = null;
@@ -410,7 +410,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                             ? $targetUserIds[$record->owner_id]
                             : null;
                         $resourceClassId = null;
-                        $isPublic = (integer) (boolean) $record->public;
+                        $isPublic = (integer) (bool) $record->public;
                         break;
                     case 'File':
                         $id = null;
@@ -484,7 +484,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                         // compatibility module).
                         $toInsert['sha256'] = null;
                         $toInsert['has_original'] = 1;
-                        $toInsert['has_thumbnails'] = (integer) (boolean) $record->has_derivative_image;
+                        $toInsert['has_thumbnails'] = (integer) (bool) $record->has_derivative_image;
                         $toInsert['position'] = $record->order ?: 1;
                         $toInsert['lang'] = null;
                         break;
@@ -506,7 +506,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         $totalTarget = $target->totalRows($mappedType);
 
         // Substract the default item set for the site beforechecks, if any.
-        $isItemSetSite = (boolean) $this->_getItemSetSiteId();
+        $isItemSetSite = (bool) $this->_getItemSetSiteId();
         if ($recordType == 'Collection' && $isItemSetSite) {
             --$totalTarget;
         }
@@ -698,7 +698,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         $totalRecordsMapped = $totalRecords - $totalRecordsUnmapped;
         $totalTarget = $target->totalRows($mappedType);
         // Substract the six properties of the default item set for the site.
-        $isItemSetSite = (boolean) $this->_getItemSetSiteId();
+        $isItemSetSite = (bool) $this->_getItemSetSiteId();
         if ($isItemSetSite) {
             $totalTarget -= 6;
         }
