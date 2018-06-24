@@ -1071,6 +1071,7 @@ OUTPUT;
             . DIRECTORY_SEPARATOR . 'themes';
 
         $mappingRegex = $this->getMerged('mapping_regex');
+        $mappingRegexCallback = $this->getMerged('mapping_regex_callback');
         $mappingReplace = $this->getMerged('mapping_replace');
 
         $files = UpgradeToOmekaS_Common::listFilesInFolder($path, array('php', 'phtml'));
@@ -1101,9 +1102,18 @@ OUTPUT;
             $output = preg_replace(array_keys($mappingRegex), array_values($mappingRegex), $input, -1, $count);
             $countF = $count;
 
+            // Method preg_replace_callback_array() doesn't exist in php 5.6.
+            $countR = 0;
+            foreach ($mappingRegexCallback as $regex => $callback) {
+                $output = preg_replace_callback($regex, $callback, $output, -1, $count);
+                $countR += $count;
+            }
+            $countR = $count;
+
             $output = str_replace(array_keys($mappingReplace), array_values($mappingReplace), $output, $count);
             $countV = $count;
-            $totalCalls += $countF + $countV;
+
+            $totalCalls += $countF + $countR + $countV;
 
             if (!$flag && !empty($input) && empty($output)) {
                 $flag = true;

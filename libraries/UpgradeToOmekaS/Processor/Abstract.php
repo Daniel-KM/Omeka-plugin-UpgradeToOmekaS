@@ -157,6 +157,13 @@ abstract class UpgradeToOmekaS_Processor_Abstract
     public $mapping_regex = array();
 
     /**
+     * Mapping to replace strings via regex callback in converted themes of Omeka S.
+     *
+     * @var array
+     */
+    public $mapping_regex_callback = array();
+
+    /**
      * Mapping to replace strings in converted themes of Omeka S.
      *
      * @var array
@@ -388,6 +395,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
             'mapping_theme_folders',
             'mapping_theme_files',
             'mapping_regex',
+            'mapping_regex_callback',
             'mapping_replace',
             'list_hooks',
             'upgrade_files',
@@ -1980,6 +1988,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
             'comment' => false,
             'file' => '',
             'preg_replace' => array(),
+            'preg_replace_callback' => array(),
             'preg_replace_single' => array(),
             'replace' => array(),
             'prepend' => '',
