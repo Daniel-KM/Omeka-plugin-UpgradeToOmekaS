@@ -380,6 +380,11 @@ OUTPUT;
                 unset($values['item_file_gallery']);
             }
 
+            if (array_key_exists('footer', $values) && !array_key_exists('footer_text', $values)) {
+                $target->saveSiteSetting('footer_text', $values['footer'], $siteId);
+                unset($values['footer']);
+            }
+
             // Add the option for the homepage.
             $values['use_homepage_template'] = '0';
 
@@ -570,9 +575,11 @@ OUTPUT;
                                 unset($element->options->description);
                                 unset($element->options->validators);
                                 break;
-                            case 'footer_text':
-                                $renamed[$key] = 'footer';
+                            case 'footer':
+                                $renamed[$key] = 'footer_text';
                                 $key = $renamed[$key];
+                                // No break.
+                            case 'footer_text':
                                 $element->type = $mappingFormElements['textarea'];
                                 $element->options->label = 'Footer Content';
                                 $element->options->info = 'HTML content to appear in the footer';
@@ -656,11 +663,11 @@ elements.logo.name = "logo"
 elements.logo.type = "Omeka\Form\Element\Asset"
 elements.logo.options.label = "Logo"
 
-elements.footer.name = "footer"
-elements.footer.type = "Omeka\Form\Element\HtmlTextarea"
-elements.footer.options.label = "Footer Content"
-elements.footer.options.info = "HTML content to appear in the footer"
-elements.footer.attributes.value = "Powered by Omeka S"
+elements.footer_text.name = "footer"
+elements.footer_text.type = "Omeka\Form\Element\HtmlTextarea"
+elements.footer_text.options.label = "Footer Content"
+elements.footer_text.options.info = "HTML content to appear in the footer"
+elements.footer_text.attributes.value = "Powered by Omeka S"
 
 OUTPUT;
         }
