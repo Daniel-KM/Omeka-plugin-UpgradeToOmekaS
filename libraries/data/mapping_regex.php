@@ -239,7 +239,7 @@ return array(
     '~\b(set_option)\(~'                            => '$this->upgrade()->\1(',
     '~\b(delete_option)\(~'                         => '$this->upgrade()->\1(',
     '~\b(pluck)\(~'                                 => '$this->upgrade()->\1(',
-    '~\b(current_user)\(~'                          => '$this->upgrade()->\1(',
+    '~\b(current_user)\(~'                          => '$this->identity\1(',
     '~\b(get_db)\(~'                                => '$this->upgrade()->\1(',
     '~\b(debug)\(~'                                 => '$this->upgrade()->\1(',
     '~\b(_log)\(~'                                  => '$this->upgrade()->\1(',
