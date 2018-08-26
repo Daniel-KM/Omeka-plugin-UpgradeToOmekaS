@@ -492,7 +492,7 @@ OUTPUT;
 name        = "{$sourceIni->title} (upgraded)"
 version     = "{$sourceIni->version}-upgraded"
 author      = "{$sourceIni->author}"
-description = "{$sourceIni->description} [upgraded the {$this->getDatetime()}]"
+description = "{$sourceIni->description} [upgraded on {$this->getDatetime()}]"
 theme_link  = "{$sourceIni->support_link}"
 author_link = "{$sourceIni->website}"
 license     = "{$sourceIni->license}"
