@@ -1856,14 +1856,22 @@ abstract class UpgradeToOmekaS_Processor_Abstract
     /**
      * Transform the given string into a valid URL slug
      *
-     * @see SiteSlugTrait::slugify()
+     * @see \Omeka\Entity\Site\SiteSlugTrait::slugify()
      *
      * @param string $input
      * @return string
      */
     protected function _slugify($input)
     {
-        $slug = mb_strtolower($input, 'UTF-8');
+        if (extension_loaded('intl')) {
+            $transliterator = \Transliterator::createFromRules(':: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;');
+            $slug = $transliterator->transliterate($input);
+        } elseif (extension_loaded('iconv')) {
+            $slug = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $input);
+        } else {
+            $slug = $input;
+        }
+        $slug = mb_strtolower($slug, 'UTF-8');
         $slug = preg_replace('/[^a-z0-9-]+/u', '-', $slug);
         $slug = preg_replace('/-{2,}/', '-', $slug);
         $slug = preg_replace('/-*$/', '', $slug);
