@@ -962,7 +962,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
                     $baseMessage . __('Method "%s" does not exist.', $method));
             }
 
-            $this->_log($baseMessage . __('Started.'), Zend_Log::DEBUG);
+            $this->_log($baseMessage . __('Started sub-task %d/%d.', $i + 1, $totalMethods), Zend_Log::DEBUG);
 
             // Initialize progression.
             $this->_currentTask = $method;
@@ -979,7 +979,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
                 revert_theme_base_url();
                 throw new UpgradeToOmekaS_Exception($baseMessage . $e->getMessage());
             }
-            $this->_log($baseMessage . __('Ended.'), Zend_Log::DEBUG);
+            $this->_log($baseMessage . __('Ended sub-task %d/%d.', $i + 1, $totalMethods), Zend_Log::DEBUG);
         }
 
         $this->_log(__('End processing.'), Zend_Log::DEBUG);
