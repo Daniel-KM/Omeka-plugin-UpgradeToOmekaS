@@ -160,13 +160,13 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
     {
         // Load and check the database.
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // Create database.ini.
         $database = $this->getParam('database');
         if (!isset($database['type'])) {
             throw new UpgradeToOmekaS_Exception(
-                __('The type of the database is not defined.', $type));
+                __('The type of the database is not defined.'));
         }
         $type = $database['type'];
         switch ($type) {
@@ -269,6 +269,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         $regexPattern = '/^(\d+)_(\w+)\.php$/';
         $files = glob($globPattern, GLOB_MARK);
         foreach ($files as $filename) {
+            $matches = array();
             if (preg_match($regexPattern, basename($filename), $matches)) {
                 $version = $matches[1];
                 $migrations[] = $version;
@@ -548,7 +549,8 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         // ; ssl = "always"
         $value = isset($config->ssl) ? $config->ssl : null;
         if ($value) {
-            $allowedValues = array('logins', 'sessions', 'always');
+            // TODO Allowed values for config.
+            // $allowedValues = array('logins', 'sessions', 'always');
             $this->_log('[' . __FUNCTION__ . ']: ' . __('The processor doesn’t convert the parameter "%s" currently.',
                 'ssl'), Zend_Log::WARN);
         }
@@ -783,7 +785,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
             $bind = array();
             $bind['password_hash'] = $firstUserPassword;
             $bind['modified'] = $this->getDatetime();
-            $result = $targetDb->update('user', $bind, 'id = ' . $user->id);
+            $targetDb->update('user', $bind, 'id = ' . $user->id);
         }
 
         $this->_log('[' . __FUNCTION__ . ']: ' . __('The username of users has been removed; the displayed name is unchanged.'),
@@ -797,10 +799,10 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
     protected function _upgradeSite()
     {
         // Settings of Omeka Classic: create the first site.
-        $db = $this->_db;
+        // $db = $this->_db;
         $target = $this->getTarget();
         $targetDb = $target->getDb();
-        $settings = $this->getSecurityIni();
+        // $settings = $this->getSecurityIni();
         $user = $this->getParam('user');
 
         $title = $this->getSiteTitle();

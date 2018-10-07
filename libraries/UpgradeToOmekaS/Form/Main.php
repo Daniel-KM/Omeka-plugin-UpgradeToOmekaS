@@ -981,7 +981,7 @@ class UpgradeToOmekaS_Form_Main extends Omeka_Form
             // Use only the prefix of the vocabulary.
             $prefix = trim(substr($vocabularyLabel, strpos($vocabularyLabel, '[')), '[] ');
             // Preformat the source.
-            foreach ($vocabulary as $id => $value) {
+            foreach ($vocabulary as $value) {
                 $label = reset($value);
                 $name = key($value);
                 $result[$vocabularyLabel][$prefix . ':' . $name] = $label;

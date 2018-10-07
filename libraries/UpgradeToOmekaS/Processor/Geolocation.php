@@ -93,7 +93,7 @@ ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REF
 
         // TODO Zoom level to bounds : get the lat/lng and add a value.
         // Prepare the list for the conversion of zoom levels to bounds.
-        $zoomBounds = array();
+        // $zoomBounds = array();
 
         // The process uses the regular queries of Omeka in order to keep
         // only good records and to manage filters.

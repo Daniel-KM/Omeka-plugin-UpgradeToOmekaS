@@ -400,7 +400,8 @@ class UpgradeToOmekaS_Processor_CoreElements extends UpgradeToOmekaS_Processor_A
                 $prefix = trim(substr($vocabularyLabel, strpos($vocabularyLabel, '[')), '[] ');
                 // Preformat the class.
                 foreach ($vocabulary as $classId => $class) {
-                    $label = reset($class);
+                    // $label = reset($class);
+                    reset($class);
                     $name = key($class);
                     $result[$prefix . ':' . $name] = $classId;
                 }
@@ -467,7 +468,8 @@ class UpgradeToOmekaS_Processor_CoreElements extends UpgradeToOmekaS_Processor_A
 
             // Get the mapping of elements with properties as prefix:name.
             $mapping = $this->getMerged('mapping_elements');
-            foreach ($mapping as $setName => &$mappedElements) {
+            // Mapping keys are the set names.
+            foreach ($mapping as &$mappedElements) {
                 $mappedElements = array_map(function ($v) {
                     return key($v) . ':' . reset($v);
                 } , $mappedElements);

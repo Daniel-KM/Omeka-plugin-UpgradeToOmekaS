@@ -30,7 +30,7 @@ class UpgradeToOmekaS_Processor_CoreFiles extends UpgradeToOmekaS_Processor_Abst
         $filesType = $this->getParam('files_type');
         if (!in_array($filesType, array('hard_link', 'copy', 'dummy_hard', 'dummy'))) {
             throw new UpgradeToOmekaS_Exception(
-                __('The type "%s" is not supported.', $type));
+                __('The type "%s" is not supported.', $filesType));
         }
         $copyMode = in_array($filesType, array('hard_link', 'dummy_hard')) ? 'hard_link' : 'copy';
         $isDummy = in_array($filesType, array('dummy_hard', 'dummy'));

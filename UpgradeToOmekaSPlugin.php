@@ -212,6 +212,7 @@ class UpgradeToOmekaSPlugin extends Omeka_Plugin_AbstractPlugin
         $filenames = UpgradeToOmekaS_Common::listFilesInDir($dir);
         $filenames = array_diff($filenames, array('Abstract.php', 'AbstractCore.php', 'Base.php'));
         foreach ($filenames as $filename) {
+            $matches = array();
             if (!preg_match('/^(.+)\.php$/', $filename, $matches)
                     || strpos($filename, 'Core') === 0
                 ) {

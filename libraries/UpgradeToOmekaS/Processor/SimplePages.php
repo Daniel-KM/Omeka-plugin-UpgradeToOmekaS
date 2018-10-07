@@ -39,7 +39,7 @@ class UpgradeToOmekaS_Processor_SimplePages extends UpgradeToOmekaS_Processor_Ab
         $db = $this->_db;
         $target = $this->getTarget();
 
-        $user = $this->getParam('user');
+        // $user = $this->getParam('user');
 
         // The process uses the regular queries of Omeka in order to keep
         // only good records and to manage filters.

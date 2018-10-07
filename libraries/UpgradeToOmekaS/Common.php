@@ -422,7 +422,7 @@ class UpgradeToOmekaS_Common
      * Process the move operation according to admin choice.
      *
      * @todo Use Omeka process like with ArchiveRepertory.
-     * @see ArchiveRepertory::_moveFile()
+     * @see \ArchiveRepertoryPlugin::moveFile()
      *
      * @param string $source
      * @param string $destination
@@ -455,6 +455,11 @@ class UpgradeToOmekaS_Common
         } catch (Exception $e) {
             $message = __('Error during move of a file from "%s" to "%s": %s',
                 $source, $destination, $e->getMessage());
+            return $message;
+        }
+        if (!$result) {
+            $message = __('Error during move of a file from "%s" to "%s".',
+                $source, $destination);
             return $message;
         }
 
@@ -522,7 +527,10 @@ class UpgradeToOmekaS_Common
             else {
                 // Check if the zip command exists.
                 try {
-                    $this->executeCommand('unzip', $status, $output, $errors);
+                    $status = 0;
+                    $output = '';
+                    $errors = array();
+                    self::executeCommand('unzip', $status, $output, $errors);
                 } catch (Exception $e) {
                     $status = 1;
                 }
@@ -585,7 +593,7 @@ class UpgradeToOmekaS_Common
     {
         // First, save the file in the temp directory, because ZipArchive and
         // unzip don't manage url.
-        if (self::isRemote($zipfile)) {
+        if (self::isRemote($zipFile)) {
             $isTempFile = true;
             $input = tempnam(sys_get_temp_dir(), basename($zipFile));
             $handle = fopen($zipFile, 'rb');
@@ -619,7 +627,10 @@ class UpgradeToOmekaS_Common
             else {
                 // Check if the zip command exists.
                 try {
-                    $this->executeCommand('unzip', $status, $output, $errors);
+                    $status = 0;
+                    $output = '';
+                    $errors = array();
+                    self::executeCommand('unzip', $status, $output, $errors);
                 } catch (Exception $e) {
                     $status = 1;
                 }
@@ -665,6 +676,9 @@ class UpgradeToOmekaS_Common
 
         $cmd = $command . ' ' . $arg;
 
+        $status = 0;
+        $output = '';
+        $errors = array();
         self::executeCommand($cmd, $status, $output, $errors);
 
         // A return value of 0 indicates the convert binary is working correctly.
@@ -693,6 +707,7 @@ class UpgradeToOmekaS_Common
             1 => array("pipe", "w"), //STDOUT
             2 => array("pipe", "w"), //STDERR
         );
+        $pipes = array();
         $proc = proc_open($cmd, $descriptorSpec, $pipes, getcwd());
         if (!is_resource($proc)) {
             throw new UpgradeToOmekaS_Exception(__('Failed to execute command: %s', $cmd));

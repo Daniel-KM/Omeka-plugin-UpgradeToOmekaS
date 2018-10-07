@@ -120,7 +120,7 @@ ALTER TABLE comment ADD CONSTRAINT FK_9474526C727ACA70 FOREIGN KEY (parent_id) R
             // Manage exceptions.
             switch ($option) {
                 case 'commenting_pages':
-                    $valueCommentingPages = unserialize($value) ? unserialize($value) : [];
+                    $valueCommentingPages = unserialize($value) ? unserialize($value) : array();
                     $commentingPagesMap = array(
                         'collections/show' => 'item_sets',
                         'items/show' => 'items',
@@ -129,7 +129,7 @@ ALTER TABLE comment ADD CONSTRAINT FK_9474526C727ACA70 FOREIGN KEY (parent_id) R
                         // 'exhibits/summary' => 'site_pages',
                         // 'exhibits/show' => 'site_pages',
                     );
-                    $value = [];
+                    $value = array();
                     foreach ($valueCommentingPages as $valueCommentingPage) {
                         if (isset($commentingPagesMap[$valueCommentingPage])) {
                             $value[] = $commentingPagesMap[$valueCommentingPage];
@@ -139,10 +139,10 @@ ALTER TABLE comment ADD CONSTRAINT FK_9474526C727ACA70 FOREIGN KEY (parent_id) R
 
                 case 'commenting_flag_email':
                     if ($value) {
-                        $value = [];
+                        $value = array();
                         $value[] = get_option('administrator_email');
                     } else {
-                        $value = [];
+                        $value = array();
                     }
                     break;
             }
@@ -187,7 +187,7 @@ ALTER TABLE comment ADD CONSTRAINT FK_9474526C727ACA70 FOREIGN KEY (parent_id) R
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // Prepare the mapping of record ids (only item ids are kept).
         $mappedIds = array();
@@ -254,6 +254,7 @@ ALTER TABLE comment ADD CONSTRAINT FK_9474526C727ACA70 FOREIGN KEY (parent_id) R
                         break;
                 }
 
+                $toInsert = array();
                 $toInsert['id'] = $record->id;
                 $toInsert['owner_id'] = $owner;
                 $toInsert['resource_id'] = $resourceId;

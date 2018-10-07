@@ -99,9 +99,9 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
 
     protected function _createItemSetForSite()
     {
-        $db = $this->_db;
+        // $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         $user = $this->getParam('user');
 
@@ -199,7 +199,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
 
         $toInserts = array();
         $position = 1;
-        foreach ($itemSets as $i => $id) {
+        foreach ($itemSets as $id) {
             $toInsert = array();
             $toInsert['id'] = null;
             $toInsert['site_id'] = $siteId;
@@ -220,7 +220,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         $totalRecords = total_records($recordType);
         if (empty($totalRecords)) {
@@ -228,7 +228,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         }
         $this->_progress(0, $totalRecords);
 
-        $siteId = $this->getSiteId();
+        // $siteId = $this->getSiteId();
 
         $mappedCollectionIds = $this->fetchMappedIds('Collection');
 
@@ -334,13 +334,13 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         }
         $this->_progress(0, $totalRecords);
 
-        $siteId = $this->getSiteId();
+        // $siteId = $this->getSiteId();
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
-        $user = $this->getParam('user');
+        // $user = $this->getParam('user');
 
         // The process uses the regular queries of Omeka in order to keep
         // only good records and to manage filters.
@@ -455,7 +455,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                     case 'File':
                         // Clean the filename to manage broken filenames if needed.
                         $source = trim($record->original_filename, '/\\' . DIRECTORY_SEPARATOR);
-                        $scheme = parse_url($source, PHP_URL_SCHEME);
+                        // $scheme = parse_url($source, PHP_URL_SCHEME);
                         $isRemote = UpgradeToOmekaS_Common::isRemote($source);
                         $extension = pathinfo($source, PATHINFO_EXTENSION);
                         // Clean the filename to manage broken filenames if needed.
@@ -559,7 +559,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
      */
     protected function _remapIds($remapIds, $recordType)
     {
-        $db = $this->_db;
+        // $db = $this->_db;
         $target = $this->getTarget();
         $targetDb = $target->getDb();
 
@@ -623,7 +623,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         $totalRecords = total_records($recordType);
         if (empty($totalRecords)) {
@@ -631,7 +631,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         }
         $this->_progress(0, $totalRecords);
 
-        $siteId = $this->getSiteId();
+        // $siteId = $this->getSiteId();
 
         $table = $db->getTable($recordType);
 
@@ -703,8 +703,9 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
             $totalTarget -= 6;
         }
 
-        $sql = "SELECT id, resource_id, property_id, value FROM value";
-        $result = $targetDb->fetchAll($sql);
+        // TODO Add a global chedk of imported values.
+        // $sql = "SELECT id, resource_id, property_id, value FROM value";
+        // $result = $targetDb->fetchAll($sql);
 
         if ($totalRecordsMapped > $totalTarget) {
             $message = __('Only %d/%d %s have been upgraded into "%s".',

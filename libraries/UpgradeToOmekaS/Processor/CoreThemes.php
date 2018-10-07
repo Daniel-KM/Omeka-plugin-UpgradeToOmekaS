@@ -399,7 +399,7 @@ OUTPUT;
 
     protected function _upgradeThemes()
     {
-        $source = PUBLIC_THEME_DIR;
+        // $source = PUBLIC_THEME_DIR;
         $destination = $this->getParam('base_dir')
             . DIRECTORY_SEPARATOR . 'themes';
 
@@ -673,20 +673,36 @@ OUTPUT;
         }
 
         $result = UpgradeToOmekaS_Common::createDir(dirname($destination));
-        // Check if the output is parsable.
+        // Check if the output is writeable.
         try {
             $result = file_put_contents($destination, $output);
+        } catch (Exception $e) {
+            throw new UpgradeToOmekaS_Exception(
+                __('The file themes/%s/config/theme.ini is not parsable (%s).',
+                    $name, $e->getMessage()));
+        }
+        if (!$result) {
+            throw new UpgradeToOmekaS_Exception(
+                __('The file themes/%s/config/theme.ini is not writeable.',
+                    $name));
+        }
+        try {
             $result = parse_ini_file($destination);
         } catch (Exception $e) {
             throw new UpgradeToOmekaS_Exception(
                 __('The file themes/%s/config/theme.ini is not parsable (%s).',
                     $name, $e->getMessage()));
         }
+        if (!$result) {
+            throw new UpgradeToOmekaS_Exception(
+                __('The file themes/%s/config/theme.ini is not parsable.',
+                    $name));
+        }
 
         foreach (array('config.ini', 'theme.ini') as $filepath) {
             $source = $path . DIRECTORY_SEPARATOR . $filepath;
-            if (file_exists($source) && is_writable($source)) {
-                $result = unlink($source);
+            if (file_exists($source) && is_writeable($source)) {
+                unlink($source);
             }
         }
     }
@@ -721,6 +737,11 @@ OUTPUT;
 OUTPUT;
 
             $result = file_put_contents($destination, $output);
+            if (!$result) {
+                throw new UpgradeToOmekaS_Exception(
+                    __('The file "%s" is not writeable.',
+                        $destination));
+            }
         }
 
         // "package.json".
@@ -887,7 +908,7 @@ OUTPUT;
     protected function _reorganizeFolders($path)
     {
         $name = basename($path);
-        $pathDefault = dirname($path) . DIRECTORY_SEPARATOR . 'default';
+        // $pathDefault = dirname($path) . DIRECTORY_SEPARATOR . 'default';
 
         // Get the default mapping folders.
         $mapping = $this->getMerged('mapping_theme_folders');
@@ -940,7 +961,7 @@ OUTPUT;
     protected function _renameFiles($path)
     {
         $name = basename($path);
-        $pathDefault = dirname($path) . DIRECTORY_SEPARATOR . 'default';
+        // $pathDefault = dirname($path) . DIRECTORY_SEPARATOR . 'default';
 
         $mapping = $this->getMerged('mapping_theme_files');
 
@@ -1051,7 +1072,7 @@ OUTPUT;
      */
     protected function _replaceImagesByImgInCss($path)
     {
-        $name = basename($path);
+        // $name = basename($path);
 
         $file = $path
             . DIRECTORY_SEPARATOR . 'asset'
@@ -1065,6 +1086,11 @@ OUTPUT;
         $content = file_get_contents($file);
         $content = str_replace('/images/', '/img/', $content);
         $result = file_put_contents($file, $content);
+        if (!$result) {
+            throw new UpgradeToOmekaS_Exception(
+                __('The file "%s" is not writeable.',
+                    $file));
+        }
     }
 
     protected function _upgradeAdminBar()
@@ -1083,14 +1109,17 @@ OUTPUT;
             "'admin-bar '" => "'user-bar '",
         );
 
-        $totalCalls = 0;
         $i = 0;
-        $flag = false;
         foreach ($files as $file) {
             $this->_progress(++$i);
             $content = file_get_contents($file);
             $content = str_replace(array_keys($replace), array_values($replace), $content);
             $result = file_put_contents($file, $content);
+            if (!$result) {
+                throw new UpgradeToOmekaS_Exception(
+                    __('The file "%s" is not writeable.',
+                        $file));
+            }
         }
     }
 
@@ -1128,6 +1157,7 @@ OUTPUT;
 
             $input = file_get_contents($file);
 
+            $count = 0;
             $output = preg_replace(array_keys($mappingRegex), array_values($mappingRegex), $input, -1, $count);
             $countF = $count;
 
@@ -1151,6 +1181,11 @@ OUTPUT;
             }
 
             $result = file_put_contents($file, $output);
+            if (!$result) {
+                throw new UpgradeToOmekaS_Exception(
+                    __('The file "%s" is not writeable.',
+                        $file));
+            }
         }
 
         $this->_log('[' . __FUNCTION__ . ']: ' . __('A total of %d calls to functions have been converted.',
@@ -1162,7 +1197,6 @@ OUTPUT;
         $hooks = $this->getMergedList('list_hooks');
         foreach ($hooks as $hook) {
             $method = '_upgradeHook' . inflector::camelize($hook);
-            $name;
             if (!method_exists($this, $method)) {
                 throw new UpgradeToOmekaS_Exception(
                     __('Method "%s" for hook "%s" doesn’t exist.', $method, $hook));

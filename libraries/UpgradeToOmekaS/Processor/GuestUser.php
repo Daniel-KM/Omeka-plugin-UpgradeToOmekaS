@@ -131,7 +131,7 @@ CREATE TABLE `guest_user_token` (
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // Unlike other records, this table is copied directly in one query.
         // The order of columns changed, so they are specified one by one.

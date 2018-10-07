@@ -87,7 +87,7 @@ class UpgradeToOmekaS_Processor_NeatlineTime extends UpgradeToOmekaS_Processor_A
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // The process uses the regular queries of Omeka in order to keep
         // only good records and to manage filters.

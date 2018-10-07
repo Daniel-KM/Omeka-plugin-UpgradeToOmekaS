@@ -147,7 +147,7 @@ ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) RE
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // Unlike other records, this table is copied directly in one query.
         // Note that tag without records are copied too (they are tags detached
@@ -205,7 +205,7 @@ ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) RE
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         $targetTags = $target->fetchPairs('tag', 'id', 'name');
         $targetUserIds = $target->fetchIds('user');
@@ -324,7 +324,7 @@ ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) RE
         // proposed and rejected tags).
 
         $targetTags = $target->fetchPairs('tag', 'id', 'name');
-        $targetTaggings = $target->fetchTable('tagging');
+        // $targetTaggings = $target->fetchTable('tagging');
         // Ids of resources and owners are kept, but the plugin didn't manage
         // the remove, so a check is done.
         $targetResourceIds = $target->fetchIds('resource');

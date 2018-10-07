@@ -11,7 +11,7 @@ class UpgradeToOmekaS_Helper_Target
     /**
      * The Zend database object.
      *
-     * @var Object
+     * @var Zend_Db
      */
     protected $_db;
 
@@ -82,7 +82,7 @@ class UpgradeToOmekaS_Helper_Target
      * Helper to get the Omeka S database object.
      *
      * @throws UpgradeToOmekaS_Exception
-     * @return Db|null
+     * @return Zend_Db|null
      */
     public function getDb()
     {
@@ -340,12 +340,11 @@ class UpgradeToOmekaS_Helper_Target
         }
 
         // Get the columns of each table.
+        $columns = array();
         foreach ($rowsByTable as $table => $rows) {
-            if (!isset($columns[$table])) {
-                $columns[$table] = $this->getTableColumns($table);
-                if (empty($columns[$table])) {
-                    return;
-                }
+            $columns[$table] = $this->getTableColumns($table);
+            if (empty($columns[$table])) {
+                return;
             }
         }
 

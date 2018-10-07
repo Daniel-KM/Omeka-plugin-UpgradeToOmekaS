@@ -15,7 +15,8 @@ class UpgradeToOmekaS_Job_Remove extends UpgradeToOmekaS_Job_Abstract
     public function perform()
     {
         // Set current user for this long running job.
-//        Zend_Registry::get('bootstrap')->bootstrap('Acl');
+        // Zend_Registry::get('bootstrap')->bootstrap('Acl');
+        // $user = $this->getUser();
 
         // Reset the status of the site.
         set_option('upgrade_to_omeka_s_process_status', Process::STATUS_IN_PROGRESS);
@@ -24,7 +25,6 @@ class UpgradeToOmekaS_Job_Remove extends UpgradeToOmekaS_Job_Abstract
         $this->_log(__('Starting remove of Omeka Semantic.'),
             Zend_Log::WARN);
 
-        $user = $this->getUser();
         $params = $this->_params;
 
         //Add the security ini params.
@@ -79,8 +79,7 @@ class UpgradeToOmekaS_Job_Remove extends UpgradeToOmekaS_Job_Abstract
             return;
         }
         if (!$result) {
-            $this->_processError(__('Unable to remove the tables of the database.',
-                $e->getMessage()));
+            $this->_processError(__('Unable to remove the tables of the database.'));
             return;
         }
         $this->_log(__('The Omeka Semantic tables of the database have been removed successfully.'),

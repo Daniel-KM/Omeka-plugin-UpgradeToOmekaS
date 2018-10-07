@@ -1690,11 +1690,15 @@ abstract class UpgradeToOmekaS_Processor_Abstract
      */
     protected function _getRecordIds($recordType, $column = 'id')
     {
-        $db = $this->_db;
-        if (!$table->hasColumn($column)) {
+        if (empty($column)) {
             return;
         }
-        $select = $db->getTable($recordType)->getSelect()
+        $db = $this->_db;
+        $table = $db->getTable($recordType);
+        if (!$table->hasColumn($column)) {
+            return array();
+        }
+        $select = $table->getSelect()
             ->reset(Zend_Db_Select::COLUMNS)
             ->from(array(), $column)
             ->order($column);
@@ -1969,6 +1973,11 @@ abstract class UpgradeToOmekaS_Processor_Abstract
 
             UpgradeToOmekaS_Common::createDir(dirname($destination));
             $result = file_put_contents($destination, $content);
+            if (!$result) {
+                throw new UpgradeToOmekaS_Exception(
+                    __('The file "%s" is not writeable.',
+                        $destination));
+            }
         }
     }
 
@@ -2068,6 +2077,11 @@ abstract class UpgradeToOmekaS_Processor_Abstract
             if (!(empty($output) && !$destinationExists)) {
                 UpgradeToOmekaS_Common::createDir(dirname($destination));
                 $result = file_put_contents($destination, $output);
+                if (!$result) {
+                    throw new UpgradeToOmekaS_Exception(
+                        __('The file "%s" is not writeable.',
+                            $destination));
+                }
             }
         }
 

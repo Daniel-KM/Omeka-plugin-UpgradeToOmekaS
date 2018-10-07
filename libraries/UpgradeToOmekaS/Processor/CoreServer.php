@@ -230,6 +230,9 @@ class UpgradeToOmekaS_Processor_CoreServer extends UpgradeToOmekaS_Processor_Abs
         if (!class_exists('ZipArchive')) {
             try {
                 $messageError = __('Zip (as an available command line tool or as the php module ZipArchive) is required to extract downloaded packages.');
+                $status = 0;
+                $output = '';
+                $errors = array();
                 UpgradeToOmekaS_Common::executeCommand('unzip', $status, $output, $errors);
                 // A return value of 0 indicates the convert binary is working correctly.
                 if ($status != 0) {
@@ -360,7 +363,7 @@ class UpgradeToOmekaS_Processor_CoreServer extends UpgradeToOmekaS_Processor_Abs
                 try {
                     $targetDb = Zend_Db::Factory('PDO_MYSQL', $params);
                     if (empty($targetDb)) {
-                        $this->_checks[] = __('Can’t get access to the database "%s": %s', $dbname, $e->getMessage());
+                        $this->_checks[] = __('Can’t get access to the database "%s"', $dbname);
                     }
                 } catch (Exception $e) {
                     $this->_checks[] = __('Cannot access to the database "%s": %s', $dbname, $e->getMessage());

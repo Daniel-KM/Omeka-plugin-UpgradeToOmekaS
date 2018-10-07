@@ -41,7 +41,7 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
                 'reference_list_headings' => true,
                 'reference_tree_enabled' => false,
                 'reference_tree_term' => 'dcterms:subject',
-                'reference_tree_hierarchy' => [],
+                'reference_tree_hierarchy' => array(),
                 'reference_tree_branch' => false,
                 'reference_tree_expanded' => true,
             ),
@@ -61,7 +61,7 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
             $target->saveSetting($setting, $value);
         }
 
-        $mapping = [];
+        $mapping = array();
         $mapping['properties'] = $this->getProcessor('Core/Elements')
             ->getMappingElementsToPropertiesIds();
         $mapping['resource_classes'] = $this->getProcessor('Core/Elements')
@@ -89,7 +89,7 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
                     break;
                 case 'reference_slugs':
                     $value = json_decode($value, true);
-                    foreach ($value as $slug => &$slugData) {
+                    foreach ($value as &$slugData) {
                         $slugData['type'] = $slugData['type'] === 'ItemType' ? 'resource_classes' : 'properties';
                         if (isset($mapping[$slugData['type']][$slugData['id']])) {
                             $slugData['id'] = (int) $mapping[$slugData['type']][$slugData['id']];

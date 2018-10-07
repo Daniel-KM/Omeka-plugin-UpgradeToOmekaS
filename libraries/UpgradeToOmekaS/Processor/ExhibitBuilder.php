@@ -85,7 +85,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             $this->_checks[] = __('There are exhibit blocks without exhibit page.');
         }
 
-        if (empty($totalRecordBlocks) && !empty($totalAttachments)) {
+        if (empty($totalRecordBlocks) && !empty($totalRecordAttachments)) {
             $this->_checks[] = __('There are exhibit block attachments without exhibit block.');
         }
     }
@@ -159,16 +159,16 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
-        $user = $this->getParam('user');
+        // $user = $this->getParam('user');
 
         // The list of user ids allows to check if the owner of a record exists.
         // The id of users are kept between Omeka C and Omeka S.
         // Some users may not have been upgraded.
         $targetUserIds = $target->fetchIds('user');
 
-        $mainSiteId = $this->getSiteId();
+        // $mainSiteId = $this->getSiteId();
         $mainSiteSlug = $this->getSiteSlug();
         $mainSiteTheme = $this->getSiteTheme();
 
@@ -183,7 +183,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             $this->_progress($this->_progressCurrent);
             $records = $table->findBy(array(), $this->maxChunk, $page);
 
-            $baseId = 0;
+            // $baseId = 0;
             $toInserts = array();
             foreach ($records as $record) {
                 ++$this->_progressCurrent;
@@ -254,7 +254,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // Prepare options.
         $searchResourceTypes = $this->getProcessor('Core/Site')->upgradeSearchRecordTypes();
@@ -268,8 +268,8 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
         // good records and to manage filters.
         $table = $db->getTable($recordType);
 
-        // Prepare the mapping  of file ids.
-        $mappedFileIds = $this->fetchMappedIds('File');
+        // TODO Prepare the mapping of file ids.
+        // $mappedFileIds = $this->fetchMappedIds('File');
         $mappedExhibitIds = $this->fetchMappedIds('Exhibit');
         $mainSiteTheme = $this->getSiteTheme();
         $defaultSettings = $this->getProcessor('Core/Themes')->prepareThemeSettings();
@@ -279,8 +279,8 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             $this->_progress($this->_progressCurrent);
             $records = $table->findBy(array(), $this->maxChunk, $page);
 
-            $baseId = 0;
-            $toInserts = array();
+            // $baseId = 0;
+            // $toInserts = array();
             foreach ($records as $record) {
                 if (!isset($mappedExhibitIds[$record->id])) {
                     continue;
@@ -320,7 +320,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // The process uses the regular queries of Omeka in order to keep only
         // good records and to manage filters.
@@ -334,7 +334,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             $this->_progress($this->_progressCurrent);
             $records = $table->findBy(array(), $this->maxChunk, $page);
 
-            $baseId = 0;
+            // $baseId = 0;
             $toInserts = array();
             foreach ($records as $record) {
                 $toInserts = array();
@@ -445,7 +445,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // The process uses the regular queries of Omeka in order to keep only
         // good records and to manage filters.
@@ -571,8 +571,8 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             $this->_progress($this->_progressCurrent);
             $records = $table->findBy(array(), $this->maxChunk, $page);
 
-            $baseId = 0;
-            $toInserts = array();
+            // $baseId = 0;
+            // $toInserts = array();
             foreach ($records as $record) {
                 if (!isset($mappedExhibitIds[$record->id])) {
                     continue;
@@ -646,7 +646,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // The process uses the regular queries of Omeka in order to keep only
         // only good records and to manage filters.
@@ -679,7 +679,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             $table->applyPagination($select, $this->maxChunk, $page);
             $records = $table->fetchObjects($select);
 
-            $baseId = 0;
+            // $baseId = 0;
             $toInserts = array();
             foreach ($records as $record) {
                 ++$this->_progressCurrent;
@@ -804,7 +804,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
         $db = $this->_db;
         $target = $this->getTarget();
-        $targetDb = $target->getDb();
+        // $targetDb = $target->getDb();
 
         // Prepare the mapping of file ids.
         $mappedFileIds = $this->fetchMappedIds('File');
@@ -827,7 +827,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
             $this->_progress($this->_progressCurrent);
             $records = $table->findBy(array(), $this->maxChunk, $page);
 
-            $baseId = 0;
+            // $baseId = 0;
             $toInserts = array();
             foreach ($records as $record) {
                 ++$this->_progressCurrent;
@@ -911,7 +911,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
         // TODO Get the matching slug in exhibit pages.
         return;
 
-        static $slugs;
+        // static $slugs;
 
         // Check if this is a slug.
         $slug = ltrim($parsed['path'], '/');

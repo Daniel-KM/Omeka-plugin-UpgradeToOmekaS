@@ -110,6 +110,9 @@ class UpgradeToOmekaS_Processor_CoreChecks extends UpgradeToOmekaS_Processor_Abs
         $command = $cliPath . ' --syntax-check ' . escapeshellarg($file);
 
         try {
+            $status = 0;
+            $output = '';
+            $errors = array();
             UpgradeToOmekaS_Common::executeCommand($command, $status, $output, $errors);
             // A return value of 0 indicates the convert binary is working correctly.
             $result = $status == 0;
@@ -132,7 +135,7 @@ class UpgradeToOmekaS_Processor_CoreChecks extends UpgradeToOmekaS_Processor_Abs
             return;
         }
 
-        $resourceType = 'media';
+        // $resourceType = 'media';
 
         $target = $this->getTarget();
         $targetDb = $target->getDb();
@@ -166,7 +169,7 @@ class UpgradeToOmekaS_Processor_CoreChecks extends UpgradeToOmekaS_Processor_Abs
             }
 
             $hash = hash_file('sha256', $filepath);
-            $result = $targetDb->update('media', array('sha256' => $hash), 'id = ' . $row['id']);
+            $targetDb->update('media', array('sha256' => $hash), 'id = ' . $row['id']);
         }
 
         $this->_log('[' . __FUNCTION__ . ']: ' . __('All %d files have been hashed.', $totalResources),

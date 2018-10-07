@@ -85,7 +85,7 @@ class UpgradeToOmekaS_Processor_OpenLayersZoom extends UpgradeToOmekaS_Processor
             $this->_progress($this->_progressCurrent);
             $records = $table->findBy(array(), $this->maxChunk, $page);
 
-            $baseId = 0;
+            // $baseId = 0;
             foreach ($records as $record) {
                 ++$this->_progressCurrent;
 
@@ -101,7 +101,8 @@ class UpgradeToOmekaS_Processor_OpenLayersZoom extends UpgradeToOmekaS_Processor
                 $toUpdate['ingester'] = 'tile';
                 $toUpdate['renderer'] = 'tile';
 
-                $result = $targetDb->update('media', $toUpdate, 'id = ' . $mediaId);
+                // TODO Check result.
+                $targetDb->update('media', $toUpdate, 'id = ' . $mediaId);
             }
         }
 
