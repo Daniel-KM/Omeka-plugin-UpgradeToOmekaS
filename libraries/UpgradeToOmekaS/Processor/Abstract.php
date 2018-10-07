@@ -1635,7 +1635,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
 
         if (!empty($this->module['install']['site_settings'])) {
             // Set default params to the first site only.
-            foreach ($module['install']['site_settings'] as $setting => $value) {
+            foreach ($this->module['install']['site_settings'] as $setting => $value) {
                 $target->saveSiteSetting($setting, $value);
             }
         }
