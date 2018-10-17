@@ -14,10 +14,10 @@ class UpgradeToOmekaS_Processor_CoreServer extends UpgradeToOmekaS_Processor_Abs
 
     public $module = array(
         'name' => 'Omeka S',
-        'version' => '1.1.1',
+        'version' => '1.2.0',
         'url' => 'https://github.com/omeka/omeka-s/releases/download/v%s/omeka-s-%s.zip',
-        'size' => 14393944,
-        'sha1' => 'fc00ca9314c0303f82080e815238efde136c027e',
+        'size' => 13300855,
+        'sha1' => 'b14b122a5af0a7ef6cec5992077be804c8a30bc3',
         'type' => 'equivalent',
         'requires' => array(
             'minDb' => array(
@@ -96,7 +96,8 @@ class UpgradeToOmekaS_Processor_CoreServer extends UpgradeToOmekaS_Processor_Abs
         // See Omeka S ['installer']['pre_tasks']: CheckEnvironmentTask.php
         $this->_precheckPhp();
         $this->_precheckPhpModules();
-        $this->_precheckRandomGenerator();
+        // Useless now.
+        // $this->_precheckRandomGenerator();
         // See Omeka S ['installer']['pre_tasks']: CheckDbConfigurationTask.php
         $this->_precheckDatabaseServer();
         $this->_precheckZip();
@@ -186,6 +187,9 @@ class UpgradeToOmekaS_Processor_CoreServer extends UpgradeToOmekaS_Processor_Abs
         }
     }
 
+    /**
+     * @deprecated Omeka S installs the paragonie/random_compat dependency automatically.
+     */
     protected function _precheckRandomGenerator()
     {
         if (function_exists('random_bytes')) {
@@ -195,7 +199,7 @@ class UpgradeToOmekaS_Processor_CoreServer extends UpgradeToOmekaS_Processor_Abs
                 $this->_prechecks[] = __('Omeka S is unable to securely generate random numbers. Check your server and https://secure.php.net/manual/en/intro.csprng.php');
             }
         } else {
-            $this->_prechecks[] = __('Omeka S v1.0.1 is unable to securely generate random numbers. Install random compat (https://packagist.org/packages/paragonie/random_compat).');
+            $this->_prechecks[] = __('Omeka S is unable to securely generate random numbers. Install random compat (https://packagist.org/packages/paragonie/random_compat).');
         }
     }
 
