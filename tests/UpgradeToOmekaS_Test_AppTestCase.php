@@ -312,8 +312,8 @@ PLUGIN;
     /**
      * Helper to create an item directly in the target base.
      *
-     * @param Target $target
-     * @return id
+     * @param UpgradeToOmekaS_Helper_Target $target
+     * @return int The id
      */
     protected function _createItemViaDb($target)
     {

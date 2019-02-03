@@ -1,4 +1,31 @@
 <?php
+/**
+ * @var Omeka_View $this
+ * @var bool $isConfirmation
+ * @var bool $isProcessing
+ * @var bool $isStopped
+ * @var bool $isCompleted
+ * @var bool $isError
+ * @var bool $isReset
+ * @var bool $hasPreviousUpgrade
+ * @var array $previousParams
+ *
+ * @var bool $hasErrors
+ * @var array $prechecksCore
+ * @var array $prechecksPlugins
+ * @var array $processors
+ * @var array $checksCore
+ * @var array $checksPlugins
+ * @var array $plugins
+ *
+ * @var Zend_Form $form
+ * @var bool $isSiteDown
+ * @var bool $allowThemesOnly
+ * @var bool $isLogEnabled
+ * @var array $livingRunningJobs
+ * @var array $deadRunningJobs
+ */
+
 queue_css_file('upgrade-to-omeka-s');
 queue_js_file('upgrade-to-omeka-s');
 

@@ -1,3 +1,15 @@
+<?php
+/**
+ * @var Omeka_View $this
+ * @var array $previousParams
+ * @var bool $hasPreviousUpgrade
+ * @var bool $isStopped
+ * @var bool $isCompleted
+ * @var bool $isError
+ * @var bool $isReset
+ */
+
+?>
 <?php if ($hasPreviousUpgrade): ?>
 <h2><?php echo __('Previous Upgrade'); ?></h2>
 

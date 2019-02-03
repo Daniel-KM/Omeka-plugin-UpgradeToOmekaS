@@ -164,10 +164,10 @@ class UpgradeToOmekaS_IndexController extends Omeka_Controller_AbstractActionCon
         if ($upgradeType == 'themes') {
             $baseDir = $this->getParam('base_dir');
             if (empty($baseDir)
-                    || !file_exists($baseDir)
-                    || !is_dir($baseDir)
-                    || !is_writable($baseDir)
-                ) {
+                || !file_exists($baseDir)
+                || !is_dir($baseDir)
+                || !is_writeable($baseDir)
+            ) {
                 $message = __('To upgrade only themes, the base dir should be set and should contain a folder for themes.');
                 $this->view->checksCore = array('Core/Server' => array($message));
                 $this->view->checksPlugins = array();

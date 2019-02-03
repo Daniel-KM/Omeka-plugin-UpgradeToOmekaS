@@ -8,10 +8,10 @@
  * @internal This file is merged during the init of processors of the plugins.
  */
 return array(
-    'editor' => 'editor',
-    'reviewer' => 'reviewer',
-    'author' => 'author',
+    'editor'        => 'editor',
+    'reviewer'      => 'reviewer',
+    'author'        => 'author',
     // Specific roles.
-    'fulladmin' => 'site_admin',
+    'fulladmin'     => 'site_admin',
     'documentalist' => 'editor',
 );

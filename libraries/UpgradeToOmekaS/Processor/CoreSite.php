@@ -159,7 +159,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
     protected function _configOmekaS()
     {
         // Load and check the database.
-        $target = $this->getTarget();
+        // $target = $this->getTarget();
         // $targetDb = $target->getDb();
 
         // Create database.ini.

@@ -1,3 +1,15 @@
+<?php
+/**
+ * @var Omeka_View $this
+ * @var array $prechecksCore
+ * @var array $checksCore
+ * @var string $hasErrors
+ * @var array $prechecksPlugins
+ * @var array $checksPlugins
+ * @var array $plugins
+ */
+
+?>
 <h2><?php echo __('Core & Server'); ?></h2>
 <?php
 if (!empty($prechecksCore)): ?>

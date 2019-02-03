@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var Omeka_View $this
+ * @var bool $isProcessing
+ */
+
+?>
 <nav id="section-nav" class="navigation vertical">
 <?php
     $navArray = array();

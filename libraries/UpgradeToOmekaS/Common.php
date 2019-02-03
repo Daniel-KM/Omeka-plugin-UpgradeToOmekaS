@@ -232,7 +232,7 @@ class UpgradeToOmekaS_Common
             while (!file_exists($parent) && $parent != '/') {
                 $parent = dirname($parent);
             }
-            if (!is_writable($parent)) {
+            if (!is_writeable($parent)) {
                 return false;
             }
             return mkdir($path, 0755, true);
@@ -378,7 +378,7 @@ class UpgradeToOmekaS_Common
         }
         if (is_dir($path)
                 && is_readable($path)
-                && is_writable($path)
+                && is_writeable($path)
                 && ($evenNonEmpty || count(array_diff(@scandir($path), array('.', '..'))) == 0)
             ) {
             $result = self::_rrmdir($path);

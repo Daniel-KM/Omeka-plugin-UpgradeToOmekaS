@@ -1,4 +1,23 @@
 <?php
+/**
+ * @var Omeka_View $this
+ * @var bool $isProcessing
+ * @var array $progress
+ * @var array $previousParams
+ *
+ * @var bool $isStopped
+ * @var bool $isCompleted
+ * @var bool $isError
+ * @var bool $isReset
+ * @var bool $hasPreviousUpgrade
+ *
+ * @var array $logs
+ * @var bool $isSiteDown
+ * @var bool $isLogEnabled
+ * @var array $livingRunningJobs
+ * @var array $deadRunningJobs
+ */
+
 queue_css_file('upgrade-to-omeka-s');
 queue_js_file('upgrade-to-omeka-s');
 

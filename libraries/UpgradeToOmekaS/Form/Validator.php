@@ -171,7 +171,7 @@ class UpgradeToOmekaS_Form_Validator extends Zend_Validate_Callback
         }
 
         // Check rights.
-        if (!is_writable($absolutePath)) {
+        if (!is_writeable($absolutePath)) {
             $flash->addMessage(__('The base dir should be writable.'), 'error');
             return false;
         }

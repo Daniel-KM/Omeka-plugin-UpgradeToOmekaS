@@ -1856,7 +1856,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
     /**
      * Transform the given string into a valid URL slug
      *
-     * @see \Omeka\Entity\Site\SiteSlugTrait::slugify()
+     * See \Omeka\Entity\Site\SiteSlugTrait::slugify()
      *
      * @param string $input
      * @return string

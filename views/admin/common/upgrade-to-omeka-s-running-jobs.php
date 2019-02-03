@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var Omeka_View $this
+ * @var array $runningJobs
+ * @var string $type
+ * @var bool $isStopped
+ */
+
+?>
 <h2><?php echo $type == 'living' ? __('Living Running Jobs') : __('Dead Running Jobs'); ?></h2>
 <table>
     <thead>

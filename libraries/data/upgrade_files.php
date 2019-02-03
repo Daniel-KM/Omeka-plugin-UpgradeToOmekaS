@@ -239,6 +239,7 @@ $upgrade['view/common/search-filters.phtml'] = array(
 $append = <<<'OUTPUT'
 <?php // Adapted from application/view-admin/layout/header.phtml and application/view/layout/layout.phtml. ?>
 
+<?php $translate = $this->plugin('translate'); ?>
 <?php $escape = $this->plugin('escapeHtml'); ?>
 <?php $showAdvanced = isset($options['show_advanced'])
     ? $options['show_advanced']
@@ -255,36 +256,36 @@ $append = <<<'OUTPUT'
     <form action="" id="search-form">
         <?php $searchValue = isset($_GET['property'][0]['in'][0]) ? $_GET['property'][0]['in'][0] : ''; ?>
         <input type="text" name="property[0][in][]" value="<?php echo $escape($searchValue); ?>">
-        <button type="button" id="advanced"><?php echo $this->translate('Advanced Options'); ?></button>
-        <button type="submit"><?php echo $this->translate('Search'); ?></button>
+        <button type="button" id="advanced"><?php echo $translate('Advanced Options'); ?></button>
+        <button type="submit"><?php echo $translate('Search'); ?></button>
         <fieldset id="advanced-options" style="display: none;">
-            <legend><?php echo $this->translate('Resource Type'); ?></legend>
+            <legend><?php echo $translate('Resource Type'); ?></legend>
         <?php foreach ($searchResourceTypes as $searchResourceType => $labelResourceType): ?>
             <?php switch ($searchResourceType):
                     case 'Item': ?>
             <input type="radio" name="resource-type" id="search-items" value="item" checked="checked"
-                data-input-placeholder="<?php echo $escape($this->translate('Search Items')); ?>"
+                data-input-placeholder="<?php echo $escape($translate('Search Items')); ?>"
                 data-action="<?php echo $escape($this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true)); ?>">
-            <label for="search-items"><?php echo $this->translate('Items'); ?></label>
+            <label for="search-items"><?php echo $translate('Items'); ?></label>
                 <?php break; ?>
                 <?php case 'ItemSet': ?>
             <input type="radio" name="resource-type" id="search-item-sets" value="item-set"
-                data-input-placeholder="<?php echo $escape($this->translate('Search Collections')); ?>"
+                data-input-placeholder="<?php echo $escape($translate('Search Collections')); ?>"
                 data-action="<?php echo $escape($this->url('site/resource', ['controller' => 'item-set', 'action' => 'browse'], true)); ?>">
-            <label for="search-item-sets"><?php echo $this->translate('Collections'); ?></label>
+            <label for="search-item-sets"><?php echo $translate('Collections'); ?></label>
                 <?php break; ?>
                 <?php case 'Media': ?>
             <input type="radio" name="resource-type" id="search-media" value="media"
-                data-input-placeholder="<?php echo $escape($this->translate('Search Files')); ?>"
+                data-input-placeholder="<?php echo $escape($translate('Search Files')); ?>"
                 data-action="<?php echo $escape($this->url('site/resource', ['controller' => 'media', 'action' => 'browse'], true)); ?>">
-            <label for="search-media"><?php echo $this->translate('Files'); ?></label>
+            <label for="search-media"><?php echo $translate('Files'); ?></label>
                 <?php break; ?>
             <?php /*
                 <?php case 'Page': ?>
             <input type="radio" name="resource-type" id="search-page" value="page"
-                data-input-placeholder="<?php echo $escape($this->translate('Search Pages')); ?>"
+                data-input-placeholder="<?php echo $escape($translate('Search Pages')); ?>"
                 data-action="<?php echo $escape($this->url('site/resource', ['controller' => 'page', 'action' => 'browse'], true)); ?>">
-            <label for="search-page"><?php echo $this->translate('Page'); ?></label>
+            <label for="search-page"><?php echo $translate('Page'); ?></label>
                 <?php break; ?>
             */ ?>
             <?php endswitch; ?>
@@ -321,8 +322,8 @@ $('#advanced').click(function(event) {
 <div id="search-container">
     <form action="<?php echo $this->escapeHtml($this->url('site/resource', ['controller' => 'item','action' => 'browse'], true)); ?>" id="search-form">
         <?php $searchValue = isset($_GET['property'][0]['in'][0]) ? $_GET['property'][0]['in'][0] : ''; ?>
-        <input type="text" name="property[0][in][]" value="<?php echo $escape($searchValue); ?>" placeholder="<?php echo $this->translate('Search items'); ?>">
-        <button type="submit"><?php echo $this->translate('Search'); ?></button>
+        <input type="text" name="property[0][in][]" value="<?php echo $escape($searchValue); ?>" placeholder="<?php echo $translate('Search items'); ?>">
+        <button type="submit"><?php echo $translate('Search'); ?></button>
     </form>
 </div>
 <?php endif; ?>

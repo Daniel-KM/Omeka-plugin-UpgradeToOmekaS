@@ -895,6 +895,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
      */
     protected function _insertProperties($resourceId, $properties)
     {
+        $target = $this->getTarget();
         $toInserts = $this->_prepareRowsForProperties($resourceId, $properties);
         $target->insertRows('value', $toInserts);
     }
