@@ -107,6 +107,8 @@ class UpgradeToOmekaS_Processor_CoreThemes extends UpgradeToOmekaS_Processor_Abs
             }
         }
 
+        $user = $this->getParam('user');
+
         $this->_progress(0, $totalRecords);
 
         // Prepare the destination directory.
@@ -142,6 +144,7 @@ class UpgradeToOmekaS_Processor_CoreThemes extends UpgradeToOmekaS_Processor_Abs
                 // Create the asset after each copy in case of an error.
                 $toInsert = array();
                 $toInsert['id'] = null;
+                $toInsert['owner_id'] = $user->id;
                 $toInsert['name'] = $filename;
                 $toInsert['media_type'] = $mimeType;
                 $toInsert['storage_id'] = pathinfo($filename, PATHINFO_FILENAME);
@@ -496,7 +499,7 @@ description = "{$sourceIni->description} [upgraded on {$this->getDatetime()}]"
 theme_link  = "{$sourceIni->support_link}"
 author_link = "{$sourceIni->website}"
 license     = "{$sourceIni->license}"
-omeka_version_constraint = "^1.1.0"
+omeka_version_constraint = "^1.3.0"
 ;omeka_minimum_version = "{$sourceIni->omeka_minimum_version}"
 ;omeka_target_version = "{$sourceIni->omeka_target_version}"
 ;helpers[] = ThemeHelperOne

@@ -1,6 +1,11 @@
--- Exported from OmekaS v1.1.1
+-- Exported from OmekaS v1.3.0
 
+SET NAMES utf8;
+SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+SET NAMES utf8mb4;
 
 TRUNCATE `property`;
 INSERT INTO `property` (`id`, `owner_id`, `vocabulary_id`, `local_name`, `label`, `comment`) VALUES
@@ -305,3 +310,5 @@ INSERT INTO `vocabulary` (`id`, `owner_id`, `namespace_uri`, `prefix`, `label`, 
 (4,	NULL,	'http://xmlns.com/foaf/0.1/',	'foaf',	'Friend of a Friend',	'Relationships between people and organizations (FOAF)');
 
 SET foreign_key_checks = 1;
+
+-- 2019-02-04 00:00:00

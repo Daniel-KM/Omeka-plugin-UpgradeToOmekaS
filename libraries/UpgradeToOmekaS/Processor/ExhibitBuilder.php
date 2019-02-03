@@ -7,10 +7,9 @@
  */
 class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor_Abstract
 {
-
     public $pluginName = 'ExhibitBuilder';
     public $minVersion = '3.1';
-    public $maxVersion = '3.4';
+    public $maxVersion = '3.4.1';
 
     public $module = array(
         'type' => 'integrated',
@@ -59,7 +58,7 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
 
     protected function _precheckConfig()
     {
-        // TODO Fix issue between MultiLanguage and ExhibitBuilder.
+        // TODO Fix issue between MultiLanguage and ExhibitBuilder. May have been fixed.
         $plugin = get_record('Plugin', array('name' => 'MultiLanguage'));
         if ($plugin && $plugin->active) {
             $this->_prechecks[] = __('There is an incompatibility between the plugins MultiLanguage and ExhibitBuilder, so disable MultiLanguage to process the upgrade.');
@@ -199,12 +198,18 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 // Navigation is updated after the upgrade of exhibit pages.
                 $navigation = json_encode(array());
 
+                $summary = $record->description;
+                if ($record->credits) {
+                    $summary .= "\n\n" . __('Credits: %s', $record->credits);
+                }
+
                 $toInsert = array();
                 $toInsert['id'] = null;
                 $toInsert['owner_id'] = $ownerId;
                 $toInsert['slug'] = $slug;
                 $toInsert['theme'] = substr($theme, 0, 190);
                 $toInsert['title'] = substr($record->title, 0, 190);
+                $toInsert['summary'] = $summary;
                 $toInsert['navigation'] = $navigation;
                 $toInsert['item_pool'] = json_encode(array());
                 $toInsert['created'] = $record->added;

@@ -17,10 +17,10 @@ class UpgradeToOmekaS_Processor_Geolocation extends UpgradeToOmekaS_Processor_Ab
 
     public $module = array(
         'name' => 'Mapping',
-        'version' => '1.0.1',
+        'version' => '1.1.1',
         'url' => 'https://github.com/omeka-s-modules/Mapping/releases/download/v%s/Mapping-%s.zip',
-        'size' => 821064,
-        'sha1' => '7640c75cf5c29d33d08269bd3ece0486c33ae2fd',
+        'size' => 1104571,
+        'sha1' => '1bccc44492010b623bd820cd9c555de350a098ff',
         'type' => 'equivalent',
         'partial' => true,
         'note' => 'Really free (no Google Map but Leaflet/OpenStreetMap), smarter, with multipoints and layers.',
@@ -72,7 +72,7 @@ ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REF
         $targetDb = $target->getDb();
 
         // Check the version.
-        $tableName = $db->getTable('Location')->getTableName();
+        $tableName = $db->getTable($recordType)->getTableName();
         $result = $db->describeTable($tableName);
         $withDescription = isset($result['description']);
 

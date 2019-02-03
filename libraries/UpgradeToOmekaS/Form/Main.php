@@ -473,6 +473,13 @@ class UpgradeToOmekaS_Form_Main extends Omeka_Form
             'value' => false,
         ));
 
+        $this->addElement('checkbox', 'skip_themes', array(
+            'label' => __('Skip Themes'),
+            'description' => __('The upgrade of the themes is long and may be useless if you will a new one.'),
+            'required' => false,
+            'value' => false,
+        ));
+
         if (empty($this->_unupgradablePlugins)) {
             $this->addElement('hidden', 'plugins_confirm_unupgradable', array(
                 'value' => true,

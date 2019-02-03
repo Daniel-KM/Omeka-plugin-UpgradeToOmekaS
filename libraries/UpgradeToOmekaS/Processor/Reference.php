@@ -24,9 +24,10 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
             // Copied from the original module.config.php.
             'config' => array(
                 'reference_resource_name' => 'items',
-                'reference_query_type' => 'eq',
                 'reference_link_to_single' => true,
+                'reference_custom_url' => false,
                 'reference_total' => true,
+                'reference_search_list_values' => false,
                 // Pages ("properties" or "resource_classes") to provide, by slug.
                 'reference_slugs' => array(
                     // 3 is the property id of Dublin Core Terms Subject, forced during install.
@@ -43,6 +44,7 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
                 'reference_tree_term' => 'dcterms:subject',
                 'reference_tree_hierarchy' => array(),
                 'reference_tree_branch' => false,
+                'reference_query_type' => 'eq',
                 'reference_tree_expanded' => true,
             ),
         ),
@@ -68,13 +70,15 @@ class UpgradeToOmekaS_Processor_Reference extends UpgradeToOmekaS_Processor_Abst
             ->getMappingItemTypesToClasses();
 
         $mapOptions = array(
-            'reference_query_type' => 'reference_query_type',
             'reference_link_to_single' => 'reference_link_to_single',
+            'reference_custom_url' => 'reference_custom_url',
+            'reference_search_list_values' => 'reference_search_list_values',
             'reference_slugs' => 'reference_slugs',
             'reference_list_skiplinks' => 'reference_list_skiplinks',
             'reference_list_headings' => 'reference_list_headings',
             'reference_tree_enabled' => 'reference_tree_enabled',
             'reference_tree_hierarchy' => 'reference_tree_hierarchy',
+            'reference_query_type' => 'reference_query_type',
             'reference_tree_expanded' => 'reference_tree_expanded',
         );
         foreach ($mapOptions as $option => $setting) {

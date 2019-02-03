@@ -326,6 +326,7 @@ PLUGIN;
         $toInsert['owner_id'] = null;
         $toInsert['resource_class_id'] = null;
         $toInsert['resource_template_id'] = null;
+        $toInsert['thumbnail_id'] = null;
         $toInsert['is_public'] = 0;
         $toInsert['created'] = date('Y-m-d H:i:s');
         $toInsert['modified'] = date('Y-m-d H:i:s');

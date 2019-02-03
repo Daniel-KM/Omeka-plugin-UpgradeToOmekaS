@@ -128,6 +128,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         $toInsert['owner_id'] = $user->id;
         $toInsert['resource_class_id'] = null;
         $toInsert['resource_template_id'] = $defaultResourceTemplateId;
+        $toInsert['thumbnail_id'] = null;
         $toInsert['is_public'] = 0;
         $toInsert['created'] = $this->getDatetime();
         $toInsert['modified'] = $this->getDatetime();
@@ -427,6 +428,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                 $toInsert['owner_id'] = $ownerId;
                 $toInsert['resource_class_id'] = $resourceClassId;
                 $toInsert['resource_template_id'] = $defaultResourceTemplateId;
+                $toInsert['thumbnail_id'] = null;
                 $toInsert['is_public'] = $isPublic;
                 $toInsert['created'] = $record->added;
                 $toInsert['modified'] = $this->_cleanSqlTimestamp($record->modified);
@@ -483,6 +485,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                         // The sha256 is optional and set later (here or in the
                         // compatibility module).
                         $toInsert['sha256'] = null;
+                        $toInsert['size'] = $record->size;
                         $toInsert['has_original'] = 1;
                         $toInsert['has_thumbnails'] = (int) (bool) $record->has_derivative_image;
                         $toInsert['position'] = $record->order ?: 1;
@@ -688,6 +691,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                 $toInsert['lang'] = null;
                 $toInsert['value'] = $record->text;
                 $toInsert['uri'] = null;
+                $toInsert['is_public'] = 1;
                 $toInserts[] = $target->cleanQuote($toInsert);
             }
 
@@ -708,8 +712,8 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         // $result = $targetDb->fetchAll($sql);
 
         if ($totalRecordsMapped > $totalTarget) {
-            $message = __('Only %d/%d %s have been upgraded into "%s".',
-                $totalTarget, $totalRecordsMapped, $recordTypePlural, $mappedType);
+            $message = __('Only %d/%d %s have been upgraded into "%s" (unmapped/total records: %d/%d / default item set: %s).',
+                $totalTarget, $totalRecordsMapped, $recordTypePlural, $mappedType, $totalRecordsUnmapped, $totalRecords, $isItemSetSite ? 'yes (-6)' : 'no');
             $skipErrorMetadata = $this->getParam('skip_error_metadata');
             if ($skipErrorMetadata) {
                 $this->_log($message, Zend_Log::WARN);
@@ -858,6 +862,7 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         $toInsertBase['lang'] = null;
         $toInsertBase['value'] = null;
         $toInsertBase['uri'] = null;
+        $toInsertBase['is_public'] = 1;
 
         $toInserts = array();
         foreach ($properties as $property => $values) {

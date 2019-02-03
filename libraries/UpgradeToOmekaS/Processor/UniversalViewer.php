@@ -16,10 +16,10 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
     public $module = array(
         array(
             'name' => 'IiifServer',
-            'version' => '3.5.10',
+            'version' => '3.5.11',
             'url' => 'https://github.com/Daniel-KM/Omeka-S-module-IiifServer/releases/download/%s/IiifServer.zip',
-            'size' => 262080,
-            'sha1' => 'de136c4a56c5d7a429eaf5eb9bd7b4cd795626b0',
+            'size' => 264331,
+            'sha1' => '0d72cd39b651c1f5134db78e8211444cba4f4b0d',
             'type' => 'port',
             'install' => array(
                 'config' => array(
@@ -40,10 +40,10 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
         ),
         array(
             'name' => 'UniversalViewer',
-            'version' => '3.5.7',
+            'version' => '3.5.9',
             'url' => 'https://github.com/Daniel-KM/Omeka-S-module-UniversalViewer/releases/download/%s/UniversalViewer.zip',
-            'size' => 2083342,
-            'sha1' => 'cafa187b4ebadb4e026c0c1c03c4b9da027ca66d',
+            'size' => 2084287,
+            'sha1' => '1786eb47e3f883dafc8088b814d0c9829ce178ef',
             'type' => 'port',
             'install' => array(
                 'config' => array(

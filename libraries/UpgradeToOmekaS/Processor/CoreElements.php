@@ -33,7 +33,7 @@ class UpgradeToOmekaS_Processor_CoreElements extends UpgradeToOmekaS_Processor_A
     {
         $customItemTypes = $this->_getCustomItemTypes();
         $message = '[' . __FUNCTION__ . ']: '
-            . __('In Omeka S, it’s possible to create one or more specific forms for each type of item.')
+            . __('In Omeka S, it’s possible to create one or more specific forms (templates) for each type of item.')
             . ' ';
 
         if ($customItemTypes) {

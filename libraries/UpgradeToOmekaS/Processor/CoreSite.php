@@ -13,7 +13,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
     public $module = array(
         'type' => 'integrated',
         // The version is required here only to save it in the database.
-        'version' => '1.1.1',
+        'version' => '1.3.0',
     );
 
     public $processMethods = array(
@@ -292,6 +292,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         $script = dirname(dirname(dirname(dirname(__FILE__))))
             . DIRECTORY_SEPARATOR . 'libraries'
             . DIRECTORY_SEPARATOR . 'data'
+            . DIRECTORY_SEPARATOR . 'install'
             . DIRECTORY_SEPARATOR . 'rdf_vocabularies.sql';
         $sql = file_get_contents($script);
         $result = $targetDb->prepare($sql)->execute();
@@ -308,6 +309,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         $script = dirname(dirname(dirname(dirname(__FILE__))))
             . DIRECTORY_SEPARATOR . 'libraries'
             . DIRECTORY_SEPARATOR . 'data'
+            . DIRECTORY_SEPARATOR . 'install'
             . DIRECTORY_SEPARATOR . 'default_templates.sql';
         $sql = file_get_contents($script);
         $result = $targetDb->prepare($sql)->execute();
@@ -542,6 +544,9 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         if ($value || $values) {
             $this->_log('[' . __FUNCTION__ . ']: ' . __('The processor doesn’t convert the parameter "%s" currently.',
                 'storage.adapter'), Zend_Log::WARN);
+            if ($value === 'Omeka_Storage_Adapter_ZendS3') {
+                $this->_log('[' . __FUNCTION__ . ']: ' . __('The module AmazonS3 (https://github.com/Daniel-KM/Omeka-S-module-AmazonS3) can be used to managed files: it should be done separately currently.'), Zend_Log::WARN);
+            }
         }
 
         // Security.
@@ -833,12 +838,23 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
             $navigation[] = $homepage;
         }
 
+        $summary = get_option('description');
+        $author = get_option('author');
+        if ($author) {
+            $summary .= "\n\n" . __('Author: %s', $author);
+        }
+        $copyright = get_option('copyright');
+        if ($copyright) {
+            $summary .= "\n\n" . __('Copyright: %s', $copyright);
+        }
+
         $toInsert = array();
         $toInsert['id'] = $id;
         $toInsert['owner_id'] = $user->id;
         $toInsert['slug'] = $slug;
         $toInsert['theme'] = substr($theme ?: 'default', 0, 190);
         $toInsert['title'] = substr($title, 0, 190);
+        $toInsert['summary'] = $summary;
         $toInsert['navigation'] = $this->toJson($navigation);
         $toInsert['item_pool'] = json_encode(array());
         $toInsert['created'] = $this->getDatetime();
@@ -965,7 +981,7 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         $target->insertRows('site_permission', $toInserts);
 
         $this->_log('[' . __FUNCTION__ . ']: '
-                . __('The "author", the "description" and the "copyright" of the site have been moved to the collection created for the site.'),
+                . __('The "author", the "description" and the "copyright" of the site have been added to the collection created for the site.'),
             Zend_Log::INFO);
 
         $this->_log('[' . __FUNCTION__ . ']: ' . __('The first site has been created.')
