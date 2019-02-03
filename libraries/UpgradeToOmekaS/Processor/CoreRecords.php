@@ -597,9 +597,10 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
         $result = $targetDb->fetchCol($sql);
 
         if (empty($result) || count($result) != count($remapIds)) {
+            $this->_log(__('Unable to fetch the last %d %s ids in the target database.',
+                    count($remapIds), $recordTypePlural), Zend_Log::ERR);
             throw new UpgradeToOmekaS_Exception(
-                __('Unable to fetch the last %d %s ids in the target database.',
-                    count($remapIds), $recordTypePlural));
+                __('List of remaped %s: %s', $recordTypePlural, json_encode($remapIds, 448)));
         }
 
         // Check if this is really the n last destination ids. They must
