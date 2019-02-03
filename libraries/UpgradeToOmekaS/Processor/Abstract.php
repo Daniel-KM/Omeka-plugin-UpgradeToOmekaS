@@ -1981,7 +1981,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
 
             UpgradeToOmekaS_Common::createDir(dirname($destination));
             $result = file_put_contents($destination, $content);
-            if (!$result) {
+            if ($result === false) {
                 throw new UpgradeToOmekaS_Exception(
                     __('The file "%s" is not writeable.',
                         $destination));
@@ -2085,7 +2085,7 @@ abstract class UpgradeToOmekaS_Processor_Abstract
             if (!(empty($output) && !$destinationExists)) {
                 UpgradeToOmekaS_Common::createDir(dirname($destination));
                 $result = file_put_contents($destination, $output);
-                if (!$result) {
+                if ($result === false) {
                     throw new UpgradeToOmekaS_Exception(
                         __('The file "%s" is not writeable.',
                             $destination));

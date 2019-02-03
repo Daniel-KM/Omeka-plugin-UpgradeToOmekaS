@@ -723,7 +723,7 @@ OUTPUT;
                 __('The file themes/%s/config/theme.ini is not parsable (%s).',
                     $name, $e->getMessage()));
         }
-        if (!$result) {
+        if ($result === false) {
             throw new UpgradeToOmekaS_Exception(
                 __('The file themes/%s/config/theme.ini is not writeable.',
                     $name));
@@ -735,7 +735,7 @@ OUTPUT;
                 __('The file themes/%s/config/theme.ini is not parsable (%s).',
                     $name, $e->getMessage()));
         }
-        if (!$result) {
+        if ($result === false) {
             // TODO Log  the warning.
             throw new UpgradeToOmekaS_Exception(
                 __('The file themes/%s/config/theme.ini is not parsable.',
@@ -816,7 +816,7 @@ OUTPUT;
 OUTPUT;
 
             $result = file_put_contents($destination, $output);
-            if (!$result) {
+            if ($result === false) {
                 throw new UpgradeToOmekaS_Exception(
                     __('The file "%s" is not writeable.',
                         $destination));
@@ -1132,7 +1132,7 @@ OUTPUT;
                 . rtrim($footer) . PHP_EOL;
 
             $result = file_put_contents($pathLayout, $output);
-            if (!$result) {
+            if ($result === false) {
                 throw new UpgradeToOmekaS_Exception(
                     __('An error occurred when saving "%s" in themes/%s.',
                         'layout.phtml', $name));
@@ -1165,7 +1165,7 @@ OUTPUT;
         $content = file_get_contents($file);
         $content = str_replace('/images/', '/img/', $content);
         $result = file_put_contents($file, $content);
-        if (!$result) {
+        if ($result === false) {
             throw new UpgradeToOmekaS_Exception(
                 __('The file "%s" is not writeable.',
                     $file));
@@ -1194,7 +1194,7 @@ OUTPUT;
             $content = file_get_contents($file);
             $content = str_replace(array_keys($replace), array_values($replace), $content);
             $result = file_put_contents($file, $content);
-            if (!$result) {
+            if ($result === false) {
                 throw new UpgradeToOmekaS_Exception(
                     __('The file "%s" is not writeable.',
                         $file));
@@ -1260,7 +1260,7 @@ OUTPUT;
             }
 
             $result = file_put_contents($file, $output);
-            if (!$result) {
+            if ($result === false) {
                 throw new UpgradeToOmekaS_Exception(
                     __('The file "%s" is not writeable.',
                         $file));

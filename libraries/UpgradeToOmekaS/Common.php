@@ -239,6 +239,8 @@ class UpgradeToOmekaS_Common
         }
         elseif (!is_dir($path)) {
             return false;
+        } elseif (!is_writeable($path)) {
+            return false;
         }
 
         return true;
