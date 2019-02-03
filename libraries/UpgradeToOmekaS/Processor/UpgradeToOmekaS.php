@@ -9,19 +9,33 @@ class UpgradeToOmekaS_Processor_UpgradeToOmekaS extends UpgradeToOmekaS_Processo
 {
 
     public $pluginName = 'UpgradeToOmekaS';
-    public $minVersion = '2.1.1';
+    public $minVersion = '2.1.3.1';
     public $maxVersion = '';
 
+    public $multipleModules = true;
     public $module = array(
-        'name' => 'UpgradeFromOmekaClassic',
-        'version' => null,
-        'url' => 'https://github.com/Daniel-KM/Omeka-S-module-UpgradeFromOmekaClassic/archive/master.zip',
-        'size' => null,
-        'sha1' => null,
-        'type' => 'upgrade',
-        'partial' => false,
-        'note' => 'Install the compatibility layer for upgraded themes.',
-        'install' => array(),
+        array(
+            'name' => 'Next',
+            'version' => null,
+            'url' => 'https://github.com/Daniel-KM/Omeka-S-module-Next/archive/master.zip',
+            'size' => null,
+            'sha1' => null,
+            'type' => 'upgrade',
+            'partial' => false,
+            'note' => 'Add some small features for Omeka S.',
+            'install' => array(),
+        ),
+        array(
+            'name' => 'UpgradeFromOmekaClassic',
+            'version' => null,
+            'url' => 'https://github.com/Daniel-KM/Omeka-S-module-UpgradeFromOmekaClassic/archive/master.zip',
+            'size' => null,
+            'sha1' => null,
+            'type' => 'upgrade',
+            'partial' => false,
+            'note' => 'Install the compatibility layer for upgraded themes.',
+            'install' => array(),
+        ),
     );
 
     public $processMethods = array(
