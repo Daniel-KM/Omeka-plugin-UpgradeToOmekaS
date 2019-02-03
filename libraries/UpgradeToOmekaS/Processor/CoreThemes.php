@@ -30,6 +30,13 @@ class UpgradeToOmekaS_Processor_CoreThemes extends UpgradeToOmekaS_Processor_Abs
         ),
     );
 
+    /**
+     * The name of the theme that is currently processing.
+     *
+     * @var string
+     */
+    protected $_nameTheme;
+
     protected function _copyAssets()
     {
         $this->_copyAssetsFilesAndMetadata();
@@ -441,6 +448,8 @@ OUTPUT;
 
     protected function _upgradeTheme($path)
     {
+        $this->_nameTheme = basename($path);
+
         $this->_upgradeConfigTheme($path);
         $this->_addStandardFiles($path);
         $this->_reorganizeFolders($path);
@@ -457,7 +466,7 @@ OUTPUT;
      */
     protected function _upgradeConfigTheme($path)
     {
-        $name = basename($path);
+        $name = $this->_nameTheme;
         unset($this->_versionTheme);
 
         // "theme.ini" and "config.ini" are merged into "config/theme.ini".
@@ -479,6 +488,8 @@ OUTPUT;
         // Kept for next method.
         $this->_versionTheme = $sourceIni->version;
 
+        $sourceIniDescription = $this->_replaceDoubleQuotes($sourceIni->description);
+
         $output = <<<OUTPUT
 ;;;;;;;
 ; Theme Settings
@@ -495,7 +506,7 @@ OUTPUT;
 name        = "{$sourceIni->title} (upgraded)"
 version     = "{$sourceIni->version}-upgraded"
 author      = "{$sourceIni->author}"
-description = "{$sourceIni->description} [upgraded on {$this->getDatetime()}]"
+description = "{$sourceIniDescription} [upgraded on {$this->getDatetime()}]"
 theme_link  = "{$sourceIni->support_link}"
 author_link = "{$sourceIni->website}"
 license     = "{$sourceIni->license}"
@@ -509,7 +520,8 @@ omeka_version_constraint = "^1.3.0"
 OUTPUT;
 
         $source = $path . DIRECTORY_SEPARATOR . 'config.ini';
-        if (file_exists($source)) {
+        $hasConfigIni = file_exists($source);
+        if ($hasConfigIni) {
             $sourceIni = new Zend_Config_Ini($source, null, true);
 
             $elements = array();
@@ -540,10 +552,16 @@ OUTPUT;
                     // Add the name.
                     $element->name = $key;
 
+                    $type = $element->type;
+
+                    // Check if it's an element to comment (to avoid to replace double quote).
+                    // $toComment = isset($mappingFormElements[$type])
+                    //     && !in_array($element->name, array('item_file_gallery'));
+
                     // Convert the description into info (simpler via array).
                     if (isset($element->options->description)) {
                         $element = $element->toArray();
-                        $element['options']['info'] = $element['options']['description'];
+                        $element['options']['info'] = $this->_replaceDoubleQuotes($element['options']['description']);
                         unset($element['options']['description']);
                         $element = new Zend_Config($element, true);
                     }
@@ -551,7 +569,7 @@ OUTPUT;
                     // Convert options values to attributes values.
                     if (isset($element->options->value)) {
                         $element = $element->toArray();
-                        $element['attributes']['value'] = $element['options']['value'];
+                        $element['attributes']['value'] = $this->_replaceDoubleQuotes($element['options']['value']);
                         unset($element['options']['value']);
                         $element = new Zend_Config($element, true);
                     }
@@ -559,12 +577,10 @@ OUTPUT;
                     // Convert multi options to values options.
                     if (isset($element->options->multiOptions)) {
                         $element = $element->toArray();
-                        $element['options']['value_options'] = $element['options']['multiOptions'];
+                        $element['options']['value_options'] = $this->_replaceDoubleQuotes($element['options']['multiOptions']);
                         unset($element['options']['multiOptions']);
                         $element = new Zend_Config($element, true);
                     }
-
-                    $type = $element->type;
 
                     // Update the class if possible.
                     if (isset($mappingFormElements[$type])) {
@@ -607,6 +623,21 @@ OUTPUT;
                 }
 
                 if ($commented) {
+                    foreach ($commented as &$element) {
+                        if (isset($element->options->description)) {
+                            $element->options->description = $this->_commentAllLines($element->options->description);
+                        }
+                        if (isset($element->options->value)) {
+                            $element->options->value = $this->_commentAllLines($element->options->value);
+                        }
+                        if (isset($element->options->value_options)) {
+                            $element->options->value_options = $this->_commentAllLines($element->options->value_options);
+                        }
+                        if (isset($element->attributes->value)) {
+                            $element->attributes->value = $this->_commentAllLines($element->attributes->value);
+                        }
+                    }
+                    unset($element);
                     $sourceIni->config = new Zend_Config(array(
                         'elements' => $elements,
                         ';elements' => $commented,
@@ -625,7 +656,7 @@ OUTPUT;
                 foreach ($sourceIni->groups as $key => $element) {
                     foreach ($element->elements as $k => $value) {
                         if (isset($renamed[$value])) {
-                            $element->elements->$k = $renamed[$value];
+                            $element->elements->$k = $this->_replaceDoubleQuotes($renamed[$value]);
                         }
                         elseif (isset($commented[$value]) || !isset($elements[$value])) {
                             unset($element->elements->$k);
@@ -639,14 +670,22 @@ OUTPUT;
                 unset($sourceIni->plugins);
             }
 
-            $writer = new Zend_Config_Writer_Ini(array(
-                'config' => $sourceIni,
-                'renderWithoutSections' => false,
-            ));
-            $output .= $writer->render();
+            try {
+                $writer = new Zend_Config_Writer_Ini(array(
+                    'config' => $sourceIni,
+                    'renderWithoutSections' => false,
+                ));
+                $output .= $writer->render();
+            } catch (Zend_Config_Exception $e) {
+                $this->_log('[' . __FUNCTION__ . ']: ' . __('The ini file "themes/%s/config.ini" contains a double quotes, that cannot be removed. Fix it to keep the config of the theme. It is replaced by a default file.',
+                    $name),
+                    Zend_Log::WARN);
+                $hasConfigIni = false;
+            }
         }
+
         // Set a default section when there is no config.
-        else {
+        if (!$hasConfigIni) {
             $output .= <<<OUTPUT
 [config]
 elements.use_homepage_template.name = "use_homepage_template"
@@ -697,6 +736,7 @@ OUTPUT;
                     $name, $e->getMessage()));
         }
         if (!$result) {
+            // TODO Log  the warning.
             throw new UpgradeToOmekaS_Exception(
                 __('The file themes/%s/config/theme.ini is not parsable.',
                     $name));
@@ -708,6 +748,42 @@ OUTPUT;
                 unlink($source);
             }
         }
+    }
+
+    /**
+     * An ini value cannot contains a double quote ("), so it is replaced by a
+     * double comma quotation mark (”).
+     *
+     * @todo Escape double quotes like in the original ini file.
+     *
+     * @param string $string
+     * @return string
+     */
+    protected function _replaceDoubleQuotes($string)
+    {
+        static $done;
+        $result = str_replace('"', '”', $string);
+        if ($result !== $string) {
+            if ($done !== $this->_nameTheme) {
+                $this->_log('[' . __FUNCTION__ . ']: ' . __('Ini file in theme "%s" contains at least one value with a double quote ". It was replaced by a double comma quotation mark ”. Reset back them yourself.',
+                    $this->_nameTheme),
+                    Zend_Log::WARN);
+            }
+            $done = $this->_nameTheme;
+        }
+        return $result;
+    }
+
+    /**
+     * A commented ini value cannot contains a line break, so all lines are
+     * commented, except the first.
+     *
+     * @param string $string
+     * @return string
+     */
+    protected function _commentAllLines($string)
+    {
+        return str_replace(array("\n", "\r"), "\n;", trim($string));
     }
 
     /**
