@@ -64,9 +64,9 @@ class UpgradeToOmekaS_Form_Main extends Omeka_Form
             'required' => true,
             'value' => '',
             'filters' => array(
-                array('StringTrim', '\s'),
+                array('StringTrim'),
                 // Remove the ending trailing directory separator.
-                array('PregReplace', array('match' =>'/[\/\\\\\\s]+$/', 'replace' => '')),
+                array('PregReplace', array('match' =>'#[/\\\\\\s]+$#', 'replace' => '')),
                 array('Callback', array(
                     'callback' => array('UpgradeToOmekaS_Form_Filter', 'filterRemoveDotSegments'))),
             ),
