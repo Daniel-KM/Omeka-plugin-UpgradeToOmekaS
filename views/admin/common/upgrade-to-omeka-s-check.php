@@ -45,6 +45,14 @@ if ($prechecksPlugins or $checksPlugins):
     ? __(plural('%d plugin can’t be upgraded.', '%d plugins can’t be upgraded.', $totalErrorsPlugins), $totalErrorsPlugins)
     :  __('%d plugins can’t be upgraded.', $totalErrorsPlugins); ?>
 </p>
+<ul>
+    <?php foreach ($prechecksPlugins as $namePlugin => $errors): ?>
+    <li><?php echo $namePlugin . ': ' . reset($errors); ?></li>
+    <?php endforeach; ?>
+    <?php foreach ($checksPlugins as $namePlugin => $errors): ?>
+    <li><?php echo $namePlugin . ': ' . reset($errors); ?></li>
+    <?php endforeach; ?>
+</ul>
 <p><?php echo function_exists('plural')
     ? __(plural('Fix it before upgrade or skip it.', 'Fix them before upgrade or skip them.', $totalErrorsPlugins), $totalErrorsPlugins)
     : __('Fix them before upgrade or skip them.', $totalErrorsPlugins);
@@ -90,7 +98,15 @@ endif;
         <tr class="<?php echo $rowClass; ?>">
             <td<?php echo $error || $note ? ' rowspan="2"' : ''; ?>><span class="<?php echo $spanClassUpgradable; ?>"><?php echo $plugin['name']; ?></span></td>
             <td><?php echo $plugin['installed'] ? __('Yes') : __('No'); ?></td>
-            <td><?php echo $plugin['active'] ? __('Yes') : __('No'); ?></td>
+            <td><?php if ($plugin['active']): ?>
+                <?php echo __('Yes'); ?>
+                <?php elseif ($plugin['installed']): ?>
+                <span class="warn"><?php echo __('No'); ?></span>
+                <?php $spanClassUpgradable .= ' warn'; ?>
+                <?php else: ?>
+                <?php echo __('No'); ?>
+                <?php endif;
+            ?></td>
             <td><?php echo $plugin['version']; ?></td>
             <td><?php echo $pluginProcessor ? $pluginProcessor->minVersion : ''; ?></td>
             <td><?php echo $pluginProcessor ? $pluginProcessor->maxVersion : ''; ?></td>

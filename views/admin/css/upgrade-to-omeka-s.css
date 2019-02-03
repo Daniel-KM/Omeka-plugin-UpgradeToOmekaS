@@ -30,6 +30,13 @@ p.explanation.note {
     color: red;
     font-weight: bold;
 }
+.upgrade .warn {
+    color: orange;
+}
+.upgrade .plugin-disabled.unupgradable.warn {
+    color: orange;
+    font-weight: bold;
+}
 #upgrade-logs .emergency,
 #upgrade-logs .alert,
 #upgrade-logs .critical {
