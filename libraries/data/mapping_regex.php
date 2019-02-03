@@ -400,7 +400,7 @@ return array(
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")square(?: |_)thumbnail(?: |_)uri(?:\'|")\s*\)~i' => '\1->thumbnailUrl(\'square\')',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")item(?: |_)id(?:\'|")\s*\)~i'                => '\1->item()->id()',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")order(?:\'|")\s*\)~i'                        => 'isset(\1->position) /* Managed in Omeka S via sql only. */ ? \1->position : null',
-    '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")size(?:\'|")\s*\)~i'                         => '$this->upgrade()->mediaFilesize(\1) /* Unmanaged in Omeka S. */',
+    '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")size(?:\'|")\s*\)~i'                         => '\1->size()',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")has(?: |_)derivative(?: |_)image(?:\'|")\s*\)~i' => '\1->hasThumbnails()',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")authentication(?:\'|")\s*\)~i'               => '\1->sha256()',
     '~\bmetadata\((\$[a-z_]\w*)\s*\,\s*(?:\'|")mime(?: |_)type(?:\'|")\s*\)~i'              => '\1->mediaType()',
