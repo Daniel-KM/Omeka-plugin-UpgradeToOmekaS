@@ -16,10 +16,10 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
     public $module = array(
         array(
             'name' => 'IiifServer',
-            'version' => '3.5.11',
-            'url' => 'https://github.com/Daniel-KM/Omeka-S-module-IiifServer/releases/download/%s/IiifServer.zip',
-            'size' => 264331,
-            'sha1' => '0d72cd39b651c1f5134db78e8211444cba4f4b0d',
+            'version' => '3.5.12',
+            'url' => 'https://github.com/Daniel-KM/Omeka-S-module-IiifServer/releases/download/%s/IiifServer-%s.zip',
+            'size' => 265228,
+            'sha1' => 'e855a93409818ccd5d62cc02b644d2f9e1ccdfcb',
             'type' => 'port',
             'install' => array(
                 'config' => array(
@@ -28,6 +28,7 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
                     'iiifserver_manifest_attribution_default' => 'Provided by Example Organization', // @translate
                     'iiifserver_manifest_license_property' => 'dcterms:license',
                     'iiifserver_manifest_license_default' => 'http://www.example.org/license.html',
+                    'iiifserver_manifest_media_metadata' => true,
                     'iiifserver_manifest_logo_default' => '',
                     'iiifserver_manifest_force_url_from' => '',
                     'iiifserver_manifest_force_url_to' => '',
@@ -40,8 +41,8 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
         ),
         array(
             'name' => 'UniversalViewer',
-            'version' => '3.5.9',
-            'url' => 'https://github.com/Daniel-KM/Omeka-S-module-UniversalViewer/releases/download/%s/UniversalViewer.zip',
+            'version' => '3.6.0',
+            'url' => 'https://github.com/Daniel-KM/Omeka-S-module-UniversalViewer/releases/download/%s/UniversalViewer-%s.zip',
             'size' => 2084287,
             'sha1' => '1786eb47e3f883dafc8088b814d0c9829ce178ef',
             'type' => 'port',
@@ -54,9 +55,6 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
                     'universalviewer_append_item_show' => true,
                     'universalviewer_append_item_set_browse' => false,
                     'universalviewer_append_item_browse' => false,
-                    'universalviewer_class' => '',
-                    'universalviewer_style' => 'background-color: #000; height: 600px;',
-                    'universalviewer_locale' => 'en-GB:English (GB),fr:French',
                 ),
             ),
         ),
@@ -146,9 +144,6 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
             'universalviewer_append_items_show' => 'universalviewer_append_item_show',
             'universalviewer_append_collections_browse' => 'universalviewer_append_item_set_browse',
             'universalviewer_append_items_browse' => 'universalviewer_append_item_browse',
-            'universalviewer_class' => 'universalviewer_class',
-            'universalviewer_style' => 'universalviewer_style',
-            'universalviewer_locale' => 'universalviewer_locale',
         );
         foreach ($mapOptions as $option => $setting) {
             if (empty($setting)) {
