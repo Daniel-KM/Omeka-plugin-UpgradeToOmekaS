@@ -207,7 +207,8 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 $toInsert['slug'] = $slug;
                 $toInsert['theme'] = substr($theme, 0, 190);
                 $toInsert['title'] = substr($record->title, 0, 190);
-                $toInsert['summary'] = $summary;
+                // Trim avoids the utf8mb4 issue.
+                $toInsert['summary'] = trim($summary);
                 // Navigation is updated after the upgrade of exhibit pages.
                 $toInsert['navigation'] = '[]';
                 $toInsert['item_pool'] = '[]';
@@ -852,7 +853,8 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 $toInsert['block_id'] = $blockId;
                 $toInsert['item_id'] = $record->item_id;
                 $toInsert['media_id'] = $mediaId;
-                $toInsert['caption'] = (string) $record->caption;
+                // Trim avoids the utf8mb4 issue (and it should be a string).
+                $toInsert['caption'] = trim($record->caption);
                 $toInsert['position'] = $record->order;
                 $toInserts['site_block_attachment'][] = $target->cleanQuote($toInsert);
             }
@@ -897,7 +899,8 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
         $result = array(
             'type' => 'page',
             'data' => array(
-                'label' => $page->title,
+                // Trim avoids the utf8mb4 issue.
+                'label' => trim($page->title),
                 'id' => $mappedExhibitPageIds[$page->id],
         ));
 

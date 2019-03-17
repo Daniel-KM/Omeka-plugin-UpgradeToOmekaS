@@ -134,7 +134,8 @@ ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REF
                 $toInsert['media_id'] = $mediaId;
                 $toInsert['lat'] = $record->latitude;
                 $toInsert['lng'] = $record->longitude;
-                $toInsert['label'] = $label;
+                // Trim avoids the utf8mb4 issue.
+                $toInsert['label'] = trim($label);
                 $toInserts['mapping_marker'][] = $target->cleanQuote($toInsert);
 
                 // TODO Convert zoom level into mapping bound.

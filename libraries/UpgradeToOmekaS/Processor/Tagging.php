@@ -307,7 +307,8 @@ ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) RE
         foreach ($nonMatchingTags as $tag) {
             $toInsert = array();
             $toInsert['id'] = null;
-            $toInsert['name'] = $tag;
+            // Trim avoids the utf8mb4 issue.
+            $toInsert['name'] = trim($tag);
             $toInserts['tag'][] = $target->cleanQuote($toInsert);
         }
         $target->insertRowsInTables($toInserts);
@@ -417,7 +418,8 @@ ALTER TABLE tagging ADD CONSTRAINT FK_A4AED1237E3C61F9 FOREIGN KEY (owner_id) RE
                 return array(
                     'type' => 'url',
                     'data' => array(
-                        'label' => $page['label'],
+                        // Trim avoids the utf8mb4 issue.
+                        'label' => trim($page['label']),
                         'url' => $site['omekaSSitePath'] . '/tags',
                 ));
         }

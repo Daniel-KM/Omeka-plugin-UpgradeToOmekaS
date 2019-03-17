@@ -266,7 +266,8 @@ ALTER TABLE comment ADD CONSTRAINT FK_9474526C727ACA70 FOREIGN KEY (parent_id) R
                 $toInsert['website'] = $record->author_url;
                 $toInsert['ip'] = subst($record->ip, 0, 45);
                 $toInsert['user_agent'] = $record->user_agent;
-                $toInsert['body'] = $record->body;
+                // Trim avoids the utf8mb4 issue.
+                $toInsert['body'] = trim($record->body);
                 $toInsert['approved'] = $record->approved;
                 $toInsert['flagged'] = $record->flagged;
                 $toInsert['spam'] = $record->is_spam;

@@ -87,7 +87,7 @@ class UpgradeToOmekaS_Helper_TargetOmekaS extends UpgradeToOmekaS_Helper_Target
         else {
             $toInsert = array();
             $toInsert['id'] = $name;
-            $toInsert['value'] = $value;
+            $toInsert['value'] = trim($value);
             if ($table == 'site_setting') {
                 $toInsert['site_id'] = $siteId;
             }

@@ -152,7 +152,8 @@ class UpgradeToOmekaS_Processor_CoreThemes extends UpgradeToOmekaS_Processor_Abs
                 $toInsert = array();
                 $toInsert['id'] = null;
                 $toInsert['owner_id'] = $user->id;
-                $toInsert['name'] = $filename;
+                // Trim avoids the utf8mb4 issue.
+                $toInsert['name'] = trim($filename);
                 $toInsert['media_type'] = $mimeType;
                 $toInsert['storage_id'] = pathinfo($filename, PATHINFO_FILENAME);
                 $toInsert['extension'] = pathinfo($filename, PATHINFO_EXTENSION);

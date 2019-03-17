@@ -121,7 +121,7 @@ to update the modules inside Omeka S.
 Database encoding fix
 ---------------------
 
-In some cases, the encoding of characters in Omeka S is not the good one.
+In rare cases, the encoding of characters in Omeka S is not the good one.
 To fix it, run the following commands on the Omeka S database (via adminer,
 phpmysql, or in command line):
 

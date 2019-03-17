@@ -478,9 +478,11 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                         $toInsert['ingester'] = $isRemote ? 'url' : 'upload';
                         $toInsert['renderer'] = 'file';
                         $toInsert['data'] = null;
-                        $toInsert['source'] = $source;
+                        // Trim avoids the utf8mb4 issue.
+                        $toInsert['source'] = trim($source);
                         $toInsert['media_type'] = $mediaType;
-                        $toInsert['storage_id'] = $storageId;
+                        // Trim avoids the utf8mb4 issue.
+                        $toInsert['storage_id'] = trim($storageId);
                         $toInsert['extension'] = $extension;
                         // The sha256 is optional and set later (here or in the
                         // compatibility module).
@@ -690,7 +692,8 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                 $toInsert['value_resource_id'] = null;
                 $toInsert['type'] = 'literal';
                 $toInsert['lang'] = null;
-                $toInsert['value'] = $record->text;
+                // Trim avoids the utf8mb4 issue.
+                $toInsert['value'] = trim($record->text);
                 $toInsert['uri'] = null;
                 $toInsert['is_public'] = 1;
                 $toInserts[] = $target->cleanQuote($toInsert);
@@ -880,7 +883,8 @@ class UpgradeToOmekaS_Processor_CoreRecords extends UpgradeToOmekaS_Processor_Ab
                 // This is a litteral.
                 else {
                     $toInsert = $toInsertBase;
-                    $toInsert['value'] = $value;
+                    // Trim avoids the utf8mb4 issue.
+                    $toInsert['value'] = trim($value);
                 }
                 $toInserts[] = $target->cleanQuote($toInsert, 'resource_id');
             }

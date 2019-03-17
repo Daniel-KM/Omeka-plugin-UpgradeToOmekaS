@@ -306,7 +306,8 @@ class UpgradeToOmekaS_Processor_CoreElements extends UpgradeToOmekaS_Processor_A
                         'id' => $classId,
                         'name' => $name,
                         'prefix:name' => $prefix . ':' . $name,
-                        'label' => $label,
+                        // Trim avoids the utf8mb4 issue.
+                        'label' => trim($label),
                         'prefix' => $prefix,
                     );
                 }
@@ -459,7 +460,8 @@ class UpgradeToOmekaS_Processor_CoreElements extends UpgradeToOmekaS_Processor_A
                         'id' => $propertyId,
                         'name' => $name,
                         'prefix:name' => $prefix . ':' . $name,
-                        'label' => $label,
+                        // Trim avoids the utf8mb4 issue.
+                        'label' => trim($label),
                         'prefix' => $prefix,
                     );
                 }

@@ -854,7 +854,8 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
         $toInsert['slug'] = $slug;
         $toInsert['theme'] = substr($theme ?: 'default', 0, 190);
         $toInsert['title'] = substr($title, 0, 190);
-        $toInsert['summary'] = $summary;
+        // Trim avoids the utf8mb4 issue.
+        $toInsert['summary'] = trim($summary);
         $toInsert['navigation'] = $this->toJson($navigation);
         $toInsert['item_pool'] = json_encode(array());
         $toInsert['created'] = $this->getDatetime();
