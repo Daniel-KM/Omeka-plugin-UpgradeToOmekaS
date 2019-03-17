@@ -165,12 +165,11 @@ class UpgradeToOmekaS_Common
         $regex = empty($extensions)
             ? '/^.+$/i'
             : '/^.+\.(' . implode('|', $extensions) . ')$/i';
-
-        $Directory = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-        $Iterator = new RecursiveIteratorIterator($Directory);
-        $Regex = new RegexIterator($Iterator, $regex, RecursiveRegexIterator::GET_MATCH);
+        $directory = new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $iterator = new \RecursiveIteratorIterator($directory);
+        $regex = new \RegexIterator($iterator, $regex, \RecursiveRegexIterator::GET_MATCH);
         $files = array();
-        foreach ($Regex as $file) {
+        foreach ($regex as $file) {
             $files[] = reset($file);
         }
         sort($files);
