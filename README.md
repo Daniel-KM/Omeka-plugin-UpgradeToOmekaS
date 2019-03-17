@@ -118,6 +118,33 @@ try to install the last version of the modules, when possible, but you may have
 to update the modules inside Omeka S.
 
 
+Database encoding fix
+---------------------
+
+In some cases, the encoding of characters in Omeka S is not the good one.
+To fix it, run the following commands on the Omeka S database (via adminer,
+phpmysql, or in command line):
+
+```SQL
+# IMPORTANT: Backup the Omeka S database first, even if you can redo the upgrade!
+
+# Check conversion on the first 100 rows.
+# The original character encoding should be checked (here "latin1").
+SELECT id, value, CONVERT(BINARY CONVERT(value USING latin1) USING utf8mb4) AS conv FROM `value` WHERE CHAR_LENGTH(value) != LENGTH(value) LIMIT 100;
+
+# WARNING: the following query works only one time: it will fail if executed a second time.
+# You may have to set another original encoding (here "latin1").
+UPDATE `value` SET value = CONVERT(BINARY CONVERT(value USING latin1) USING utf8mb4) WHERE CHAR_LENGTH(value) != LENGTH(value);
+
+# To get all the rows to fix.
+SELECT id, value FROM (SELECT id, value, CHAR_LENGTH(value) AS c, LENGTH(value) AS l, CHAR_LENGTH(CONVERT(BINARY CONVERT(value USING latin1) USING utf8mb4)) AS cc FROM `value`) AS x WHERE c != l AND c != cc;
+```
+
+Or you can execute file [`fix_utf8mb4.sql`] directly, so all tables will be
+processed. Note: only core tables are fixed currently, you must check the
+specific tables.
+
+
 Internal Upgrade Process
 ------------------------
 
@@ -196,7 +223,9 @@ altered, and that no provisions are either added or removed herefrom.
 TODO
 ----
 
-* Include translations of Omeka Classic
+* Clean the utf8mb4 database encoding issue (add a function on each value, like
+  for the user).
+* Include translations of Omeka Classic.
 * Check "todo" in the source of the plugin.
 
 
@@ -240,6 +269,7 @@ Copyright
 [Clean Url]: https://github.com/Daniel-KM/Omeka-plugin-CleanUrl
 [Zend 3]: https://framework.zend.com/
 [Doctrine]: http://www.doctrine-project.org/
+[`fix_utf8mb4.sql`]: https://github.com/Daniel-KM/Omeka-plugin-UpgradeToOmekaS/blob/master/fix_utf8mb4.sql
 [plugin issues]: https://github.com/Daniel-KM/Omeka-plugin-UpgradeToOmekaS/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html

@@ -195,8 +195,6 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 }
                 $mapExhibitSlugIds[$record->id] = $slug;
                 $theme = $record->theme ?: $mainSiteTheme;
-                // Navigation is updated after the upgrade of exhibit pages.
-                $navigation = json_encode(array());
 
                 $summary = $record->description;
                 if ($record->credits) {
@@ -210,8 +208,9 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 $toInsert['theme'] = substr($theme, 0, 190);
                 $toInsert['title'] = substr($record->title, 0, 190);
                 $toInsert['summary'] = $summary;
-                $toInsert['navigation'] = $navigation;
-                $toInsert['item_pool'] = json_encode(array());
+                // Navigation is updated after the upgrade of exhibit pages.
+                $toInsert['navigation'] = '[]';
+                $toInsert['item_pool'] = '[]';
                 $toInsert['created'] = $record->added;
                 $toInsert['modified'] = $this->_cleanSqlTimestamp($record->modified);
                 $toInsert['is_public'] = $record->public;

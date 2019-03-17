@@ -28,6 +28,9 @@
         echo __('Note') . ': ' . __('The url may be wrong if the config of the server is hardly customized.');
         echo ' ';
         echo __('If the public page doesn’t work, reset the theme to the default in the Omeka S admin board.');
+        echo ' ';
+        echo __('If there are character encoding issues, see %sreadme%s to fix them.',
+            '<a href="https://github.com/Daniel-KM/Omeka-plugin-UpgradeToOmekaS#database-encoding-fix" target="_blank">', '</a>');
     ?></p>
     <?php endif; ?>
 
