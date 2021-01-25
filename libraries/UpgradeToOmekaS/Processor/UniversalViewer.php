@@ -43,8 +43,8 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
             'name' => 'UniversalViewer',
             'version' => '3.6.0',
             'url' => 'https://github.com/Daniel-KM/Omeka-S-module-UniversalViewer/releases/download/%s/UniversalViewer-%s.zip',
-            'size' => 2084287,
-            'sha1' => '1786eb47e3f883dafc8088b814d0c9829ce178ef',
+            'size' => 3660319,
+            'sha1' => 'd59242e08fda876b74ec80970e4205fc12f0472d',
             'type' => 'port',
             'install' => array(
                 'config' => array(
@@ -96,6 +96,7 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
             'universalviewer_manifest_attribution_default' => 'iiifserver_manifest_attribution_default',
             'universalviewer_manifest_license_element' => 'iiifserver_manifest_license_property',
             'universalviewer_manifest_license_default' => 'iiifserver_manifest_license_default',
+            'universalviewer_manifest_media_metadata' => 'iiifserver_manifest_media_metadata',
             'universalviewer_manifest_logo_default' => 'iiifserver_manifest_logo_default',
 
             'universalviewer_force_https' => 'iiifserver_manifest_force_url_to',
@@ -114,6 +115,11 @@ class UpgradeToOmekaS_Processor_UniversalViewer extends UpgradeToOmekaS_Processo
             $value = get_option($option);
             // Manage exceptions.
             switch ($option) {
+                case 'universalviewer_manifest_media_metadata':
+                    if ($value === null) {
+                        continue;
+                    }
+                    break;
                 case 'universalviewer_manifest_description_element':
                 case 'universalviewer_manifest_attribution_element':
                 case 'universalviewer_manifest_license_element':
