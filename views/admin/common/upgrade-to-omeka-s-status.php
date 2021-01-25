@@ -29,6 +29,10 @@
         echo ' ';
         echo __('If the public page doesn’t work, reset the theme to the default in the Omeka S admin board.');
         echo ' ';
+        echo '<br/>';
+        echo '<strong>';
+        echo __('IMPORTANT');
+        echo '</strong> ';
         echo __('If there are character encoding issues, see %sreadme%s to fix them.',
             '<a href="https://github.com/Daniel-KM/Omeka-plugin-UpgradeToOmekaS#database-encoding-fix" target="_blank">', '</a>');
     ?></p>
