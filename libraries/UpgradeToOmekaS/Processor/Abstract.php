@@ -823,6 +823,11 @@ abstract class UpgradeToOmekaS_Processor_Abstract
             return __('The processor of a plugin should have a plugin name, %s hasn’t.', get_class($this));
         }
 
+        // The plugin should be installed for the processor.
+        if (!file_exists(PLUGIN_DIR . '/' . $this->pluginName . '/plugin.ini')) {
+            return;
+        }
+
         // There is a plugin name, so check versions.
         $path = $this->pluginName;
         try {
