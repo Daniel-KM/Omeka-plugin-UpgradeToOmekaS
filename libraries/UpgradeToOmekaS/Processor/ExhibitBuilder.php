@@ -602,7 +602,9 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                             'data' => array(
                                 'label' => '',
                                 'id' => $page,
-                        ));
+                            ),
+                            'links' => array()
+                        );
                     }
                 }
 
@@ -902,7 +904,9 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
                 // Trim avoids the utf8mb4 issue.
                 'label' => trim($page->title),
                 'id' => $mappedExhibitPageIds[$page->id],
-        ));
+            ),
+            'links' => array()
+        );
 
         if (isset($pages[$page->id])) {
             $result['links'] = array();
@@ -938,7 +942,9 @@ class UpgradeToOmekaS_Processor_ExhibitBuilder extends UpgradeToOmekaS_Processor
         //         'data' => array(
         //             'label' => $page['label'],
         //             'id' => $sitePageId,
-        //     ));
+        //         ),
+        //         'links' => array()
+        //     );
         // }
     }
 }

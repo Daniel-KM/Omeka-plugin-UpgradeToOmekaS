@@ -829,7 +829,9 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
             'data' => array(
                 'label' => __('Home'),
                 'id' => $homepageId,
-        ));
+            ),
+            'links' => array()
+        );
 
         $homepageUri = get_option(Omeka_Form_Navigation::HOMEPAGE_URI_OPTION_NAME);
         if ($homepageUri == '/') {
@@ -1307,7 +1309,9 @@ class UpgradeToOmekaS_Processor_CoreSite extends UpgradeToOmekaS_Processor_Abstr
                     'data' => array(
                         'label' => $page['label'],
                         'id' => $id,
-                ));
+                    ),
+                    'links' => array()
+                );
         }
     }
 

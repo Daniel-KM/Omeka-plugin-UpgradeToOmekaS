@@ -136,7 +136,9 @@ class UpgradeToOmekaS_Processor_SimplePages extends UpgradeToOmekaS_Processor_Ab
                     'label' => trim($page['label']),
                     // The ids are kept between Omeka 2 and Omeka S.
                     'id' => $simplePage->id,
-            ));
+                ),
+                'links' => array()
+            );
         }
     }
 }
